@@ -1,3 +1,3 @@
 # JvmPlayground
 
-yes. just playground on jvm
+yes. just playground on jvm.
