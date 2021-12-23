@@ -24,31 +24,36 @@ fun main() {
     }
 
     fun setGigaNodeAndTreeHeigth(node: Int = rootNode, parent: Int = 0, height: Int = 0) {
-        val newNodes = nodes[node].filterNot { it.key == parent }
-        if (newNodes.isEmpty() || newNodes.size >= 2) {
+        val newNodes = nodes[node]
+        if (newNodes.size > 2 || (newNodes.size == 2 && node == rootNode) || (newNodes.size == 1 && node != rootNode)) {
             gigaNode = node
             treeHeight = height
         } else {
-            setGigaNodeAndTreeHeigth(
-                node = newNodes.first().key,
-                parent = node,
-                height = height + newNodes.first().weight
-            )
-        }
-    }
-
-    fun dfs(node: Int = gigaNode, parent: Int = 0, weight: Int = 0) {
-        maxLeafNodeWeightSum = max(maxLeafNodeWeightSum, weight)
-
-        for (newNode in nodes[node]) {
-            if (newNode.key != parent) {
-                dfs(node = newNode.key, parent = node, weight = weight + newNode.weight)
+            for (newNode in newNodes) {
+                if (newNode.key != parent) {
+                    setGigaNodeAndTreeHeigth(node = newNode.key, parent = node, height = height + newNode.weight)
+                }
             }
         }
     }
 
-    setGigaNodeAndTreeHeigth()
-    dfs()
+    fun dfs(node: Int = gigaNode, parent: Int = 0, weight: Int = 0) {
+        val newNodes = nodes[node]
+        if (newNodes.size == 1) {
+            maxLeafNodeWeightSum = max(maxLeafNodeWeightSum, weight)
+        } else {
+            for (newNode in newNodes) {
+                if (newNode.key != parent) {
+                    dfs(node = newNode.key, parent = node, weight = weight + newNode.weight)
+                }
+            }
+        }
+    }
+
+    if (nodeSize != 1) {
+        setGigaNodeAndTreeHeigth()
+        dfs()
+    }
 
     bw.write("$treeHeight $maxLeafNodeWeightSum")
 
