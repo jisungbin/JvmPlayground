@@ -20,12 +20,16 @@ fun main() {
             parent
         }
     }
-
+// 다른 맥에서 공부하는 중
     fun unionParent(node: Int, node2: Int) {
         val nodeParent = findParent(node)
         val node2Parent = findParent(node2)
         if (nodeParent == node2Parent) return
-        parents[node2] = node
+        if (nodeParent < node2Parent) {
+            parents[node2Parent] = nodeParent
+        } else {
+            parents[nodeParent] = node2Parent
+        }
     }
 
     repeat(edgeCount) {
@@ -36,7 +40,7 @@ fun main() {
         unionParent(node, node2)
     }
 
-    for (i in 1..nodeCount) {
+    for (i in 1 until nodeCount) {
         if (findParent(i) != findParent(i + 1)) {
             unionParent(i, i + 1)
             taskCount++
