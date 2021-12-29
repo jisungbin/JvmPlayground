@@ -7,31 +7,43 @@ fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val bw = BufferedWriter(OutputStreamWriter(System.out))
 
-    val nodeCount = br.readLine()!!.toInt()
-    val nodes = MutableList(nodeCount + 1) { mutableListOf<Int>() }
-    var nodesDepthSum = 0
+    var taskCount = 0
+    val (nodeCount, edgeCount) = br.readLine()!!.split(" ").map { it.toInt() }
+    val parents = MutableList(nodeCount + 1) { it }
 
-    repeat(nodeCount - 1) {
+    fun findParent(node: Int): Int {
+        return if (parents[node] == node) {
+            node
+        } else {
+            val parent = findParent(parents[node])
+            parents[node] = parent
+            parent
+        }
+    }
+
+    fun unionParent(node: Int, node2: Int) {
+        val nodeParent = findParent(node)
+        val node2Parent = findParent(node2)
+        if (nodeParent == node2Parent) return
+        parents[node2] = node
+    }
+
+    repeat(edgeCount) {
         val (node, node2) = br.readLine()!!.split(" ").map { it.toInt() }
-        nodes[node].add(node2)
-        nodes[node2].add(node)
+        if (findParent(node) == findParent(node2)) {
+            taskCount++
+        }
+        unionParent(node, node2)
     }
 
-    // 모든 (리프 노드에서 루트 노드까지의 길이)가 짝수라면 패배하고, 홀수라면 이김
-    fun dfs(node: Int = 1, parent: Int = 0, childrenCount: Int = 0) {
-        for (newNode in nodes[node]) {
-            if (newNode != parent) {
-                dfs(node = newNode, parent = node, childrenCount = childrenCount + 1)
-            }
-        }
-
-        if (nodes[node].size == 1) { // 리프 노드일 때
-            nodesDepthSum += childrenCount
+    for (i in 1..nodeCount) {
+        if (findParent(i) != findParent(i + 1)) {
+            unionParent(i, i + 1)
+            taskCount++
         }
     }
 
-    dfs()
-    bw.write(if (nodesDepthSum % 2 == 0) "No" else "Yes")
+    bw.write("$taskCount")
 
     br.close()
     bw.flush()
