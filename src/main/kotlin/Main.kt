@@ -5,38 +5,101 @@ import java.io.OutputStreamWriter
 import java.util.LinkedList
 import java.util.Queue
 
-private const val MAX = 100001
-
+@Suppress("BlockingMethodInNonBlockingContext")
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val bw = BufferedWriter(OutputStreamWriter(System.out))
 
-    val (me, sister) = br.readLine()!!.split(" ").map { it.toInt() }
-    val bfsQueue: Queue<Int> = LinkedList()
-    val visitTimeAndCount = List(MAX) { mutableListOf(-1, 0) }
+    val caseCount = br.readLine()!!.toInt()
 
-    bfsQueue.offer(me)
-    visitTimeAndCount[me][0] = 0 // 방문 시간
-    visitTimeAndCount[me][1] = 1 // 방문 가능한 방법의 수
+    val columnUpper = listOf(1, -1, 0, 0)
+    val rowUpper = listOf(0, 0, 1, -1)
 
-    // sister 에 방문했을 때 멈추는게 아닌, 모든 곳에 다 방문하고 기록함
-    while (bfsQueue.isNotEmpty()) {
-        val _me = bfsQueue.poll()
-        val meVisitTimeAndCount = visitTimeAndCount[_me]
-        for (next in listOf(_me * 2, _me + 1, _me - 1)) {
-            if (next in 0 until MAX) {
-                if (visitTimeAndCount[next][0] == -1) { // 만약 방문한 적이 없다면
-                    bfsQueue.offer(next)
-                    visitTimeAndCount[next][0] = meVisitTimeAndCount[0] + 1
-                    visitTimeAndCount[next][1] = meVisitTimeAndCount[1]
-                } else if (visitTimeAndCount[next][0] == meVisitTimeAndCount[0] + 1) { // 만약 방문한 적이 있다면
-                    visitTimeAndCount[next][1] += meVisitTimeAndCount[1] // 방문 가능한 방법의 수 업데이트
+    repeat(caseCount) {
+        val (columnSize, rowSize) = br.readLine()!!.split(" ").map { it.toInt() }
+        val map = MutableList(columnSize + 2) { mutableListOf<Char>() }
+        var vis = List(columnSize) { MutableList(rowSize) { false } }
+        val keys = MutableList(26) { false } // 'a' ~ 'z'
+        var documentCount = 0
+
+        fun setDoorOpenByKey(key: Char) {
+            for (columnIndex in 1..columnSize) {
+                for (rowIndex in 1..rowSize) {
+                    // 열쇠의 대문자가 이 열쇠로 열 수 있는 문
+                    if (map[columnIndex][rowIndex].toString() == key.uppercase()) {
+                        map[columnIndex][rowIndex] = '.'
+                    }
                 }
             }
         }
-    }
 
-    bw.write(visitTimeAndCount[sister][0].toString())
+        fun bfs() {
+            var bfsQueue: Queue<List<Int>> = LinkedList()
+            vis[0][0] = true
+            bfsQueue.offer(listOf(0, 0))
+
+            while (bfsQueue.isNotEmpty()) {
+                val (column, row) = bfsQueue.poll()
+
+                // 범위 체크
+                if (column !in 0..columnSize + 1 || row !in 0..rowSize + 1) continue
+
+                // 이미 방문한 곳이거나, 벽이거나, 잠긴 문이라면 건너뛰기
+                if (vis[column][row] || map[column][row] == '*' || map[column][row] in 'A'..'Z') continue
+
+                vis[column][row] = true
+
+                when (val key = map[column][row]) {
+                    '$' -> { // 문서를 찾았을 때
+                        documentCount++
+                        map[column][row] = '.'
+                    }
+                    in 'a'..'z' -> { // 열쇠 찾았을 때
+                        map[column][row] = '.'
+                        if (!keys[key.code]) { // 이미 갖고 있던 키가 아닐 때만
+                            keys[key.code] = true
+                            setDoorOpenByKey(key) // 문 열어두기
+                            // 잠긴 문이 열렸으므로 모든 경로를 다시 확인
+                            vis = List(columnSize) { MutableList(rowSize) { false } }
+                            bfsQueue = LinkedList()
+                            bfsQueue.offer(listOf(column, row))
+                            continue
+                        }
+                    }
+                }
+
+                repeat(4) { upperIndex ->
+                    val upedColumn = column + columnUpper[upperIndex]
+                    val upedRow = row + rowUpper[upperIndex]
+                    bfsQueue.offer(listOf(upedColumn, upedRow))
+                }
+            }
+        }
+
+        // 시작점을 쉽게 (0, 0)로 잡기 위해 모든 테두리에 빈 공간을 더해줌
+        map[0] = MutableList(rowSize + 2) { '.' }
+        for (columnIndex in 1..columnSize) {
+            val line = mutableListOf<Char>()
+            val input = br.readLine()!!.toCharArray().asList()
+            line.add('.')
+            line.addAll(input)
+            line.add('.')
+            map[columnIndex] = line
+        }
+        map[columnSize + 1] = MutableList(rowSize + 2) { '.' }
+
+        // 맨 처음부터 갖고 시작하는 열쇠들 (소문자로 주어짐)
+        val defaultKeys = br.readLine()!!.toCharArray()
+        if (defaultKeys[0] != '0') { // 열쇠가 있을 때
+            defaultKeys.forEach { key ->
+                keys[(key - 97).code] = true
+                setDoorOpenByKey(key) // 문 열어두기
+            }
+        }
+
+        bfs()
+        bw.write("$documentCount\n")
+    }
 
     br.close()
     bw.flush()
