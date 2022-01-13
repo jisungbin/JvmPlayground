@@ -1,68 +1,133 @@
-/*
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class Main {
-    static ArrayList<Node>[] nodes;
-    static int nodeCount;
-    static int treeWeight = 0;
-    static boolean[] visited;
-    static int deepNode = 0;
 
-    public static void main(String[] args) throws IOException {
+    static int[][] classroom, nearEmptySeatCnt;
+    static int N;
+    static int[] dx = {-1,1,0,0};
+    static int[] dy = {0,0,-1,1};
+
+    static class Student{
+        int x;
+        int y;
+        int[] flist;
+
+        public Student(int x, int y, int[] flist) {
+            this.x = x;
+            this.y = y;
+            this.flist = flist;
+        }
+    }
+
+    static Map<Integer, Student> list = new HashMap<>();
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        nodeCount = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
+        int N2 = N*N;
+        int answer = 0;
+        classroom = new int[N][N];
+        fillNearEmptySeat();
 
-        nodes = new ArrayList[nodeCount + 1];
+        for(int i=0; i<N2; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+            int num = Integer.parseInt(st.nextToken());
+            int s1 = Integer.parseInt(st.nextToken());
+            int s2 = Integer.parseInt(st.nextToken());
+            int s3 = Integer.parseInt(st.nextToken());
+            int s4 = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i <= nodeCount; i++) {
-            nodes[i] = new ArrayList<>();
+            findSeat(num, new int[] {s1,s2,s3,s4});
         }
 
-        for (int i = 0; i < nodeCount - 1; i++) {
-            String[] t = br.readLine().split(" ");
-            int parent = Integer.parseInt(t[0]);
-            int child = Integer.parseInt(t[1]);
-            int weight = Integer.parseInt(t[2]);
-            nodes[parent].add(new Node(child, weight));
-            nodes[child].add(new Node(parent, weight));
+        for(int i=1; i<=N2; i++) {
+            Student student = list.get(i);
+            int cnt = 0;
+            for(int friend : student.flist) {
+                if(Math.abs(list.get(friend).x -student.x) + Math.abs(list.get(friend).y - student.y) == 1) {
+                    cnt++;
+                }
+            }
+
+            if(cnt==1) answer+=1;
+            else if(cnt==2) answer+=10;
+            else if(cnt==3) answer+=100;
+            else if(cnt==4) answer+=1000;
         }
 
-        visited = new boolean[nodeCount + 1];
-        visited[1] = true;
-        dfs(1, 0);
-
-        visited = new boolean[nodeCount + 1];
-        visited[deepNode] = true; // 1차 dfs에서 가장 깊은 노드
-        dfs(deepNode, 0);
-        System.out.println(treeWeight);
+        System.out.println(answer);
 
     }
 
-    public static void dfs(int node, int weight) {
-        if (treeWeight < weight) {
-            treeWeight = weight; // 트리 지름 더 큰 걸로 업데이트 (최대 지금으로 갱신)
-            deepNode = node; // 지름이 더 깊어지는 노드가, 제일 깊은 노드임
+    private static void findSeat(int num, int[] friends) {
+        int[][] nearScore = new int[N][N]; //주변에 친한 친구가 많은 위치를 찾기 위한 배열
+        for(int friend : friends) {
+            if(list.containsKey(friend)) {
+                Student student = list.get(friend);
+                int x = student.x;
+                int y = student.y;
+
+                for(int i=0; i<4; i++) {
+                    int nx = x+dx[i];
+                    int ny = y+dy[i];
+                    if(nx>=0 && nx <N && ny >=0 && ny < N && classroom[nx][ny] == 0) {
+                        nearScore[nx][ny]++;
+                    }
+                }
+            }
         }
 
-        for (Node newNode : nodes[node]) {
-            if (!visited[newNode.node2]) {
-                visited[newNode.node2] = true;
-                // node - node2 정점간의 거리 = weight + newNode.weight
-                dfs(newNode.node2, weight + newNode.weight);
+        int emptyCntMax = -1;
+        int nearScoreMax = -1;
+        int choiceX = -1;
+        int choiceY = -1;
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                if(classroom[i][j] != 0) continue;
+                if(nearScoreMax < nearScore[i][j]) {
+                    choiceX = i;
+                    choiceY = j;
+                    nearScoreMax = nearScore[i][j];
+                    emptyCntMax = nearEmptySeatCnt[i][j];
+                } else if(nearScoreMax == nearScore[i][j] && emptyCntMax < nearEmptySeatCnt[i][j]) {
+                    emptyCntMax = nearEmptySeatCnt[i][j];
+                    choiceX = i;
+                    choiceY = j;
+                }
+            }
+        }
+
+        classroom[choiceX][choiceY] = num;
+        list.put(num, new Student(choiceX,choiceY, friends));
+
+        for(int i=0; i<4; i++) {
+            int nx = choiceX+dx[i];
+            int ny = choiceY+dy[i];
+            if(nx>=0 && nx <N && ny >=0 && ny < N && classroom[nx][ny] == 0) {
+                nearEmptySeatCnt[nx][ny]--;
             }
         }
     }
-}
 
-class Node {
-    int node2, weight;
+    private static void fillNearEmptySeat() {
+        nearEmptySeatCnt = new int[N][N];
 
-    Node(int node2, int weight) {
-        this.node2 = node2;
-        this.weight = weight;
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                int cnt = 4;
+                if(i==0 || i==N-1) cnt--;
+                if(j==0 || j==N-1) cnt--;
+                nearEmptySeatCnt[i][j] = cnt;
+            }
+        }
     }
-}*/
+
+}
