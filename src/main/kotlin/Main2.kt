@@ -1,105 +1,111 @@
 import java.io.BufferedReader
-import java.io.IOException
+import java.io.BufferedWriter
 import java.io.InputStreamReader
-import java.util.StringTokenizer
+import java.io.OutputStreamWriter
+import kotlin.math.abs
 
-object Main {
-    var classroom: Array<IntArray>
-    var nearEmptySeatCnt: Array<IntArray>
-    var N = 0
-    var dx = intArrayOf(-1, 1, 0, 0)
-    var dy = intArrayOf(0, 0, -1, 1)
-    var list: MutableMap<Int, Student> = HashMap()
+private data class Student(val column: Int, val row: Int, val friends: List<Int>)
 
-    @Throws(NumberFormatException::class, IOException::class)
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val br = BufferedReader(InputStreamReader(System.`in`))
-        var st: StringTokenizer
-        N = br.readLine().toInt()
-        val N2 = N * N
-        var answer = 0
-        classroom = Array(N) { IntArray(N) }
-        fillNearEmptySeat()
-        for (i in 0 until N2) {
-            st = StringTokenizer(br.readLine(), " ")
-            val num = st.nextToken().toInt()
-            val s1 = st.nextToken().toInt()
-            val s2 = st.nextToken().toInt()
-            val s3 = st.nextToken().toInt()
-            val s4 = st.nextToken().toInt()
-            findSeat(num, intArrayOf(s1, s2, s3, s4))
-        }
-        for (i in 1..N2) {
-            val student = list[i]
-            var cnt = 0
-            for (friend in student!!.flist) {
-                if (Math.abs(list[friend]!!.x - student.x) + Math.abs(list[friend]!!.y - student.y) == 1) {
-                    cnt++
-                }
+fun main() {
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    val N = br.readLine()!!.toInt()
+    val NN = N * N
+    val columnUpper = listOf(1, -1, 0, 0)
+    val rowUpper = listOf(0, 0, 1, -1)
+
+    val classroom = List(N) { MutableList(N) { 0 } }
+    val nearEmptySeatCount = List(N) { MutableList(N) { 0 } }
+    val students = mutableMapOf<Int, Student>()
+
+    fun calcNearEmptySeatCount() {
+        for (column in 0 until N) {
+            for (row in 0 until N) {
+                var count = 4
+                if (column == 0 || column == N - 1) count--
+                if (row == 0 || row == N - 1) count--
+                nearEmptySeatCount[column][row] = count
             }
-            if (cnt == 1) answer += 1 else if (cnt == 2) answer += 10 else if (cnt == 3) answer += 100 else if (cnt == 4) answer += 1000
         }
-        println(answer)
     }
 
-    private fun findSeat(num: Int, friends: IntArray) {
-        val nearScore = Array(N) { IntArray(N) } //주변에 친한 친구가 많은 위치를 찾기 위한 배열
+    fun findSeat(num: Int, friends: List<Int>) {
+        val nearCount = List(N) { MutableList(N) { 0 } }
+
         for (friend in friends) {
-            if (list.containsKey(friend)) {
-                val student = list[friend]
-                val x = student!!.x
-                val y = student.y
-                for (i in 0..3) {
-                    val nx = x + dx[i]
-                    val ny = y + dy[i]
-                    if (nx >= 0 && nx < N && ny >= 0 && ny < N && classroom[nx][ny] == 0) {
-                        nearScore[nx][ny]++
-                    }
+            val student = students[friend] ?: continue
+            val (column, row, _) = student
+            repeat(4) { upperIndex ->
+                val uppedColumn = column + columnUpper[upperIndex]
+                val uppedRow = row + rowUpper[upperIndex]
+                if (uppedColumn in 0 until N && uppedRow in 0 until N && classroom[uppedColumn][uppedRow] == 0) {
+                    nearCount[uppedColumn][uppedRow]++
                 }
             }
         }
-        var emptyCntMax = -1
-        var nearScoreMax = -1
-        var choiceX = -1
-        var choiceY = -1
-        for (i in 0 until N) {
-            for (j in 0 until N) {
-                if (classroom[i][j] != 0) continue
-                if (nearScoreMax < nearScore[i][j]) {
-                    choiceX = i
-                    choiceY = j
-                    nearScoreMax = nearScore[i][j]
-                    emptyCntMax = nearEmptySeatCnt[i][j]
-                } else if (nearScoreMax == nearScore[i][j] && emptyCntMax < nearEmptySeatCnt[i][j]) {
-                    emptyCntMax = nearEmptySeatCnt[i][j]
-                    choiceX = i
-                    choiceY = j
+
+        var emptyCountMax = -1
+        var nearCountMax = -1
+        var choiceColumn = -1
+        var choiceRow = -1
+
+        for (column in 0 until N) {
+            for (row in 0 until N) {
+                if (classroom[column][row] != 0) continue
+                if (nearCountMax < nearCount[column][row]) {
+                    choiceColumn = column
+                    choiceRow = row
+                    nearCountMax = nearCount[column][row]
+                    emptyCountMax = nearEmptySeatCount[column][row]
+                } else if (nearCountMax == nearCount[column][row] && emptyCountMax < nearEmptySeatCount[column][row]) {
+                    emptyCountMax = nearEmptySeatCount[column][row]
+                    choiceColumn = column
+                    choiceRow = row
                 }
             }
         }
-        classroom[choiceX][choiceY] = num
-        list[num] = Student(choiceX, choiceY, friends)
-        for (i in 0..3) {
-            val nx = choiceX + dx[i]
-            val ny = choiceY + dy[i]
-            if (nx >= 0 && nx < N && ny >= 0 && ny < N && classroom[nx][ny] == 0) {
-                nearEmptySeatCnt[nx][ny]--
+
+        classroom[choiceColumn][choiceRow] = num
+        students[num] = Student(column = choiceColumn, row = choiceRow, friends = friends)
+
+        repeat(4) { upperIndex ->
+            val uppedColumn = choiceColumn + columnUpper[upperIndex]
+            val uppedRow = choiceRow + rowUpper[upperIndex]
+            if (uppedColumn in 0 until N && uppedRow in 0 until N && classroom[uppedColumn][uppedRow] == 0) {
+                nearEmptySeatCount[uppedColumn][uppedRow]--
             }
         }
     }
 
-    private fun fillNearEmptySeat() {
-        nearEmptySeatCnt = Array(N) { IntArray(N) }
-        for (i in 0 until N) {
-            for (j in 0 until N) {
-                var cnt = 4
-                if (i == 0 || i == N - 1) cnt--
-                if (j == 0 || j == N - 1) cnt--
-                nearEmptySeatCnt[i][j] = cnt
-            }
-        }
+    calcNearEmptySeatCount()
+
+    for (column in 0 until NN) {
+        val (num, s1, s2, s3, s4) = br.readLine()!!.split(" ").map(String::toInt)
+        findSeat(num = num, friends = listOf(s1, s2, s3, s4))
     }
 
-    internal class Student(var x: Int, var y: Int, var flist: IntArray)
+    var answer = 0
+    for (i in 1 .. NN) {
+        val student = students[i]!!
+        var count = 0
+        for (friendNum in student.friends) {
+            val friend = students[friendNum]!!
+            if (abs(friend.column - student.column) + abs(friend.row - student.row) == 1) {
+                count++
+            }
+        }
+
+        when (count) {
+            1 -> answer++
+            2 -> answer += 10
+            3 -> answer += 100
+            4 -> answer += 1000
+        }
+    }
+    bw.write("$answer")
+
+    bw.flush()
+    bw.close()
+    br.close()
 }
