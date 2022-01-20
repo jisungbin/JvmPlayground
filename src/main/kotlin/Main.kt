@@ -7,104 +7,57 @@ fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val bw = BufferedWriter(OutputStreamWriter(System.out))
 
-    var binggoCount = 0
-    val binggo = mutableMapOf<Int, Boolean>()
-    val numberLocateMap = mutableMapOf<Int, Pair<Int, Int>>()
-    val map = List(5) { columnIndex ->
-        br.readLine()!!.split(" ").mapIndexed { rowIndex, _number ->
-            val number = _number.toInt()
-            binggo[number] = false
-            numberLocateMap[number] = columnIndex to rowIndex
-            number
-        }
-    }
-    val input = List(5) { br.readLine()!!.split(" ").map(String::toInt) }.flatten()
+    val switchCount = br.readLine()!!.toInt()
+    val input = br.readLine()!!.split(" ").map(String::toInt).toMutableList()
+    val queryCount = br.readLine()!!.toInt()
 
-    var checkArrow1AlreadyBinggo = false
-    var checkArrow2AlreadyBinggo = false
+    fun Int.toggle() = if (this == 1) 0 else 1
 
-    fun checkBingGo(number: Int): Boolean {
-        var column = numberLocateMap[number]!!.first
-        var row = numberLocateMap[number]!!.second
-        binggo[number] = true
-
-        // column 빙고 확인
-        run checkColumn@{
-            repeat(5) { newColumn ->
-                val newNumber = map[newColumn][row]
-                // 체크되지 않은 빙고 -> 더 볼 필요가 없음
-                if (!binggo[newNumber]!!) {
-                    return@checkColumn
+    fun switch(gender: Int, number: Int) {
+        when (gender) {
+            1 -> { // 남학생은 스위치 번호가 자기가 받은 수의 배수이면, 그 스위치의 상태를 바꾼다.
+                // 즉, 스위치가 켜져 있으면 끄고, 꺼져 있으면 켠다.
+                var time = 0
+                while (true) {
+                    val newNumber = number * ++time
+                    if (newNumber > switchCount) return
+                    input[newNumber - 1] = input[newNumber - 1].toggle()
                 }
             }
-            // 여끼가지 왔으면 현재 column은 다 체크된 빙고들
-            binggoCount++
-        }
+            2 -> { // 여학생은 자기가 받은 수와 같은 번호가 붙은 스위치를 중심으로 좌우가 대칭이면서
+                // 가장 많은 스위치를 포함하는 구간을 찾아서, 그 구간에 속한 스위치의 상태를 모두 바꾼다.
 
-        // row 빙고 확인
-        run checkRow@{
-            repeat(5) { newRow ->
-                val newNumber = map[column][newRow]
-                // 체크되지 않은 빙고 -> 더 볼 필요가 없음
-                if (!binggo[newNumber]!!) {
-                    return@checkRow
-                }
-            }
-            // 여끼가지 왔으면 현재 row는 다 체크된 빙고들
-            binggoCount++
-        }
-
-        // 대각선 빙고 확인
-        if (!checkArrow1AlreadyBinggo) {
-            column = 5
-            row = -1
-
-            run checkArrow1@{
-                while (--column >= 0 && ++row < 5) {
-                    val newNumber = map[column][row]
-                    // bw.write("number: $number, column: $column, row: $row, newNumber: $newNumber, binggo: ${binggo[newNumber]!!}\n\n")
-                    // 체크되지 않은 빙고 -> 더 볼 필요가 없음
-                    if (!binggo[newNumber]!!) {
-                        return@checkArrow1
+                // 양쪽이 같으면 다음 체크 하고
+                // 다음에서 다르거나 범위 초과면 이전으로 진행
+                val newNumber = number - 1
+                var (lastStartNumber, lastEndNumber) = listOf(newNumber, newNumber)
+                while (true) {
+                    val (startNumber, endNumber) = listOf(lastStartNumber - 1, lastEndNumber + 1)
+                    if (
+                        startNumber in 0 until switchCount &&
+                        endNumber in 0 until switchCount &&
+                        input[startNumber] == input[endNumber]
+                    ) {
+                        lastStartNumber = startNumber
+                        lastEndNumber = endNumber
+                        continue
                     }
-                }
-                // 여끼가지 왔으면 현재 1 대각선은 다 체크된 빙고들
-                binggoCount++
-                checkArrow1AlreadyBinggo = true
-            }
-        }
-
-        if (!checkArrow2AlreadyBinggo) {
-            column = -1
-            row = -1
-
-            // 2) column +1, row +1 / column -1, row -1
-            run checkArrow2@{
-                while (++column < 5 && ++row < 5) {
-                    val newNumber = map[column][row]
-                    // 체크되지 않은 빙고 -> 더 볼 필요가 없음
-                    if (!binggo[newNumber]!!) {
-                        return@checkArrow2
+                    for (i in lastStartNumber..lastEndNumber) {
+                        input[i] = input[i].toggle()
                     }
+                    return
                 }
-
-                // 여끼가지 왔으면 현재 2 대각선은 다 체크된 빙고들
-                binggoCount++
-                checkArrow2AlreadyBinggo = true
-            }
-        }
-        return binggoCount >= 3
-    }
-
-    run loop@{
-        input.forEachIndexed { index, number ->
-            if (checkBingGo(number)) {
-                bw.write("${index + 1}")
-                return@loop
             }
         }
     }
 
+    repeat(queryCount) {
+        val (gender, number) = br.readLine()!!.split(" ").map(String::toInt)
+        switch(gender, number)
+    }
+
+    bw.write(input.joinToString(" "))
+    
     br.close()
     bw.flush()
     bw.close()
