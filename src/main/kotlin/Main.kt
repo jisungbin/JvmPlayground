@@ -1,70 +1,111 @@
-import Fakies.random
-import java.lang.reflect.Constructor
-import kotlin.random.Random
-
-sealed class StringType(val length: Int) {
-    class Korean(length: Int = 10) : StringType(length)
-    class English(length: Int = 10) : StringType(length)
-    class Lipsum(length: Int = 10) : StringType(length)
-}
-
-@Suppress("MemberVisibilityCanBePrivate")
-object Fakies {
-
-    @PublishedApi
-    internal fun <T> createEntity(constructor: Constructor<T>, vararg args: Any): T {
-        return constructor.newInstance(*args)
-    }
-
-    @PublishedApi
-    internal fun randomString(stringRandomType: StringType): String {
-        return when (stringRandomType) {
-            is StringType.Korean -> korean(stringRandomType.length)
-            is StringType.English -> english(stringRandomType.length)
-            is StringType.Lipsum -> LIPSUM.substring(0..stringRandomType.length)
-        }
-    }
-
-    @Suppress("unused")
-    inline fun <reified T> random(
-        count: Int = 1,
-        stringRandomType: StringType = StringType.Lipsum()
-    ): List<T> {
-        return List(count) {
-            val fields = T::class.java.declaredFields
-            val elements = Array(fields.count()) { i ->
-                when (fields[i].type) {
-                    Int::class.java -> Random.nextInt()
-                    Float::class.java -> Random.nextFloat()
-                    Double::class.java -> Random.nextDouble()
-                    Boolean::class.java -> Random.nextBoolean()
-                    String::class.java -> randomString(stringRandomType)
-                    else -> createEntity(fields[i]::class.java.constructors.first())
-                }
-            }
-            createEntity(T::class.java.constructors.first(), *elements) as T
-        }
-    }
-
-    val LIPSUM = """
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-        Excepteur sint occaecat cupidatat non proident, sunt in 
-        culpa qui officia deserunt mollit anim id est laborum.
-    """.trimIndent()
-
-    private val koreanCharPool = ('가'..'힣')
-    private val englishCharPool = ('a'..'z') + ('A'..'Z')
-
-    fun korean(length: Int = 10) = List(length) { koreanCharPool.random() }.joinToString("")
-    fun english(length: Int = 0) = List(length) { englishCharPool.random() }.joinToString("")
-}
-
-data class Test(val a: Int = 1)
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
 fun main() {
-    println(random<Test>(1))
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+
+    var binggoCount = 0
+    val binggo = mutableMapOf<Int, Boolean>()
+    val numberLocateMap = mutableMapOf<Int, Pair<Int, Int>>()
+    val map = List(5) { columnIndex ->
+        br.readLine()!!.split(" ").mapIndexed { rowIndex, _number ->
+            val number = _number.toInt()
+            binggo[number] = false
+            numberLocateMap[number] = columnIndex to rowIndex
+            number
+        }
+    }
+    val input = List(5) { br.readLine()!!.split(" ").map(String::toInt) }.flatten()
+
+    var checkArrow1AlreadyBinggo = false
+    var checkArrow2AlreadyBinggo = false
+
+    fun checkBingGo(number: Int): Boolean {
+        var column = numberLocateMap[number]!!.first
+        var row = numberLocateMap[number]!!.second
+        binggo[number] = true
+
+        // column 빙고 확인
+        run checkColumn@{
+            repeat(5) { newColumn ->
+                val newNumber = map[newColumn][row]
+                // 체크되지 않은 빙고 -> 더 볼 필요가 없음
+                if (!binggo[newNumber]!!) {
+                    return@checkColumn
+                }
+            }
+            // 여끼가지 왔으면 현재 column은 다 체크된 빙고들
+            binggoCount++
+        }
+
+        // row 빙고 확인
+        run checkRow@{
+            repeat(5) { newRow ->
+                val newNumber = map[column][newRow]
+                // 체크되지 않은 빙고 -> 더 볼 필요가 없음
+                if (!binggo[newNumber]!!) {
+                    return@checkRow
+                }
+            }
+            // 여끼가지 왔으면 현재 row는 다 체크된 빙고들
+            binggoCount++
+        }
+
+        // 대각선 빙고 확인
+        if (!checkArrow1AlreadyBinggo) {
+            column = 5
+            row = -1
+
+            run checkArrow1@{
+                while (--column >= 0 && ++row < 5) {
+                    val newNumber = map[column][row]
+                    // bw.write("number: $number, column: $column, row: $row, newNumber: $newNumber, binggo: ${binggo[newNumber]!!}\n\n")
+                    // 체크되지 않은 빙고 -> 더 볼 필요가 없음
+                    if (!binggo[newNumber]!!) {
+                        return@checkArrow1
+                    }
+                }
+                // 여끼가지 왔으면 현재 1 대각선은 다 체크된 빙고들
+                binggoCount++
+                checkArrow1AlreadyBinggo = true
+            }
+        }
+
+        if (!checkArrow2AlreadyBinggo) {
+            column = -1
+            row = -1
+
+            // 2) column +1, row +1 / column -1, row -1
+            run checkArrow2@{
+                while (++column < 5 && ++row < 5) {
+                    val newNumber = map[column][row]
+                    // 체크되지 않은 빙고 -> 더 볼 필요가 없음
+                    if (!binggo[newNumber]!!) {
+                        return@checkArrow2
+                    }
+                }
+
+                // 여끼가지 왔으면 현재 2 대각선은 다 체크된 빙고들
+                binggoCount++
+                checkArrow2AlreadyBinggo = true
+            }
+        }
+        return binggoCount >= 3
+    }
+
+    run loop@{
+        input.forEachIndexed { index, number ->
+            if (checkBingGo(number)) {
+                bw.write("${index + 1}")
+                return@loop
+            }
+        }
+    }
+
+    br.close()
+    bw.flush()
+    bw.close()
 }
