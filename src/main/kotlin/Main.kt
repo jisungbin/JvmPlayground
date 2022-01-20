@@ -2,62 +2,47 @@ import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import kotlin.math.abs
+
+private val keyboards = listOf("qwertyuiop", "asdfghjkl", "zxcvbnm").map { it.toList().map(Char::toString) }
 
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val bw = BufferedWriter(OutputStreamWriter(System.out))
 
-    val switchCount = br.readLine()!!.toInt()
-    val input = br.readLine()!!.split(" ").map(String::toInt).toMutableList()
-    val queryCount = br.readLine()!!.toInt()
-
-    fun Int.toggle() = if (this == 1) 0 else 1
-
-    fun switch(gender: Int, number: Int) {
-        when (gender) {
-            1 -> { // 남학생은 스위치 번호가 자기가 받은 수의 배수이면, 그 스위치의 상태를 바꾼다.
-                // 즉, 스위치가 켜져 있으면 끄고, 꺼져 있으면 켠다.
-                var time = 0
-                while (true) {
-                    val newNumber = number * ++time
-                    if (newNumber > switchCount) return
-                    input[newNumber - 1] = input[newNumber - 1].toggle()
-                }
+    fun String.indexOfKeyboard(): List<Int> {
+        keyboards.forEachIndexed { columnIndex, keyboard ->
+            val rowIndex = keyboard.indexOf(this)
+            if (rowIndex != -1) {
+                return listOf(columnIndex, rowIndex)
             }
-            2 -> { // 여학생은 자기가 받은 수와 같은 번호가 붙은 스위치를 중심으로 좌우가 대칭이면서
-                // 가장 많은 스위치를 포함하는 구간을 찾아서, 그 구간에 속한 스위치의 상태를 모두 바꾼다.
+        }
+        throw Exception("Unknown keyboard char.")
+    }
 
-                // 양쪽이 같으면 다음 체크 하고
-                // 다음에서 다르거나 범위 초과면 이전으로 진행
-                val newNumber = number - 1
-                var (lastStartNumber, lastEndNumber) = listOf(newNumber, newNumber)
-                while (true) {
-                    val (startNumber, endNumber) = listOf(lastStartNumber - 1, lastEndNumber + 1)
-                    if (
-                        startNumber in 0 until switchCount &&
-                        endNumber in 0 until switchCount &&
-                        input[startNumber] == input[endNumber]
-                    ) {
-                        lastStartNumber = startNumber
-                        lastEndNumber = endNumber
-                        continue
-                    }
-                    for (i in lastStartNumber..lastEndNumber) {
-                        input[i] = input[i].toggle()
-                    }
-                    return
-                }
-            }
+    val (startLeft, startRight) = br.readLine()!!.split(" ")
+    val word = br.readLine()!!.toList().map(Char::toString)
+
+    var (startLeftColumn, startLeftRow) = startLeft.indexOfKeyboard()
+    var (startRightColumn, startRightRow) = startRight.indexOfKeyboard()
+    var (time, distance) = listOf(word.size, 0)
+
+    word.forEach { char ->
+        val (column, row) = char.indexOfKeyboard()
+        if ((column <= 1 && row <= 4) || (column == 2 && row <= 3)) { // 자음
+            distance += abs(startLeftColumn - column) + abs(startLeftRow - row)
+            startLeftColumn = column
+            startLeftRow = row
+        } else { // 모음
+            distance += abs(startRightColumn - column) + abs(startRightRow - row)
+            startRightColumn = column
+            startRightRow = row
         }
     }
 
-    repeat(queryCount) {
-        val (gender, number) = br.readLine()!!.split(" ").map(String::toInt)
-        switch(gender, number)
-    }
+    time += distance
+    bw.write("$time")
 
-    bw.write(input.joinToString(" "))
-    
     br.close()
     bw.flush()
     bw.close()
