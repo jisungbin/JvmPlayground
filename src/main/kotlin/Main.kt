@@ -4,10 +4,14 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 
-fun main() = runBlocking {
-    val flow = MutableStateFlow(1)
-    flow.collect {
-        println(it)
+fun main() {
+    fun String.checkNiceUrl() = Patterns.WEB_URL.matcher(this).matches()
+    val test = """
+        test.test
+        http://naver.com
+        https://www.wwwmasd/a///asdrg#@R7f8uhisdfnjk`213refpv'da;lvxcsD12refdfafafewf
+    """.trimIndent().split("\n")
+    test.forEach {
+        println("$it: ${it.checkNiceUrl()}")
     }
-    flow.emitAll(flowOf(2, 3, 4, 5))
 }
