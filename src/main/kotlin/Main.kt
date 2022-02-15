@@ -9,14 +9,14 @@ import kotlinx.coroutines.runBlocking
 fun main() = runBlocking {
     val flow = flow {
         repeat(100) {
-            delay(500)
+            delay(1000)
             emit(it)
         }
-    }.shareIn(this, SharingStarted.Eagerly)
+    }
     // state flow, shared flow: hot
     // flow: cold
     delay(1000)
-    flow/*.buffer()*/.collect {
+    flow.buffer().collect {
         delay(1000)
         println("collected: $it")
     }
