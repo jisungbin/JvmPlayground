@@ -1,6 +1,6 @@
 internal class Test2 {
 
-    /* @Volatile*/    // volatile을 붙임으로써 데이터 불일치를 해결할 수 있다.
+    @Volatile    // volatile 을 붙임으로써 데이터 불일치를 해결할 수 있다.
     var value: Value = Value(0, false)
 
     init {
