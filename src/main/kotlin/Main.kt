@@ -1,3 +1,5 @@
+import kotlin.reflect.KProperty
+
 interface Speaker {
     val subject: String
     val script: String
@@ -27,7 +29,37 @@ class Sungbin(private val presentation: Speaker) : Speaker {
 
 class SungbinBy(presentation: Speaker) : Speaker by presentation
 
+val nameMap = mutableMapOf(
+    "first" to "Ji", "second" to "Sung", "last" to "bin"
+)
+
+class CustomString {
+    private var value = ""
+
+    operator fun getValue(ref: Any?, prop: KProperty<*>) = "[CustomString] $value"
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+        this.value = value
+    }
+}
+
+class NameBy {
+    var first by nameMap
+    var second by nameMap
+    var last by nameMap
+    fun print() {
+        println(listOf(first, second, last))
+    }
+}
+
 fun main() {
     val sungbin = Sungbin(DroidKnights())
     sungbin.say()
+
+    val nameBy = NameBy()
+    nameBy.print()
+
+    var customString by CustomString()
+    customString = "Bye, world."
+    println(customString)
 }
