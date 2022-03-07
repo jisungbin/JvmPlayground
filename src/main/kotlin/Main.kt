@@ -3,6 +3,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 fun main() = runBlocking {
     val runningTime = measureTimeMillis {
@@ -10,18 +11,20 @@ fun main() = runBlocking {
             suspend {
                 println("$index job start.")
                 delay((index * 1000).toLong())
-                println("$index job finish.")
+                "$index job finished at ${System.currentTimeMillis()}"
             }
         }
-        awaitAll(jobs)
+        awaitAll(jobs).forEach(::println)
     }
-    println(runningTime)
+    println("measureTime: $runningTime")
 }
 
-private suspend fun awaitAll(jobs: List<suspend () -> Unit>) = coroutineScope {
-    jobs.forEach { job ->
-        launch {
-            job()
+private suspend fun <T> awaitAll(jobs: List<suspend () -> T>) = coroutineScope {
+    jobs.map { job ->
+        suspendCancellableCoroutine<T> {
+            launch {
+                job()
+            }
         }
     }
 }
