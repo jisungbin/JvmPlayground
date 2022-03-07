@@ -1,23 +1,27 @@
+import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
-    launch { // non-suspend
-        repeat(3) {
-            println("first job: work ${it + 1}")
-            // yield()
+    val runningTime = measureTimeMillis {
+        val jobs = List(5) { index ->
+            suspend {
+                println("$index job start.")
+                delay((index * 1000).toLong())
+                println("$index job finish.")
+            }
         }
+        awaitAll(jobs)
     }
+    println(runningTime)
+}
 
-    launch {
-        repeat(3) {
-            println("second job: work ${it + 1}")
-//            yield()
+private suspend fun awaitAll(jobs: List<suspend () -> Unit>) = coroutineScope {
+    jobs.forEach { job ->
+        launch {
+            job()
         }
-    }
-
-    repeat(3) {
-        println("main: start job ${it + 1}")
-//        yield()
     }
 }
