@@ -29,10 +29,6 @@ class Sungbin(private val presentation: Speaker) : Speaker {
 
 class SungbinBy(presentation: Speaker) : Speaker by presentation
 
-val nameMap = mutableMapOf(
-    "first" to "Ji", "second" to "Sung", "last" to "bin"
-)
-
 class CustomString {
     private var value = ""
 
@@ -42,6 +38,10 @@ class CustomString {
         this.value = value
     }
 }
+
+val nameMap = mutableMapOf(
+    "first" to "Ji", "second" to "Sung", "last" to "bin"
+)
 
 class NameBy {
     var first by nameMap
@@ -53,7 +53,7 @@ class NameBy {
 }
 
 fun main() {
-    val sungbin = Sungbin(DroidKnights())
+    val sungbin = SungbinBy(DroidKnights())
     sungbin.say()
 
     val nameBy = NameBy()
