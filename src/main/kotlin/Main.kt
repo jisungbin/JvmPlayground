@@ -1,4 +1,5 @@
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -13,11 +14,12 @@ fun main() = runBlocking<Unit> {
             emitting(it, sharedFlow, channel)
         }
     }
+    delay(500)
     launch {
         sharedFlow.collect { println("SharedFlow: $it") }
     }
     launch {
-        channel.receiveAsFlow().collect { println("Channel: $it") }
+        channel.receiveAsFlow().collect { println("Channel: $it\n") }
     }
 }
 
