@@ -1,33 +1,21 @@
-import kotlinx.coroutines.channels.Channel
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun main() = runBlocking<Unit> {
-    val sharedFlow = MutableSharedFlow<Int>()
-    val channel = Channel<Int>()
-    launch {
-        repeat(10) {
-            emitting(it, sharedFlow, channel)
+@OptIn(ExperimentalTime::class)
+fun main(): Unit = runBlocking {
+    val time = measureTime {
+        val one = async {
+            delay(1000)
+            1
         }
+        val two = async {
+            delay(1000)
+            2
+        }
+        println(one.await() + two.await())
     }
-    delay(500)
-    launch {
-        sharedFlow.collect { println("SharedFlow: $it") }
-    }
-    launch {
-        channel.receiveAsFlow().collect { println("Channel: $it\n") }
-    }
-}
-
-private suspend fun <T> emitting(
-    value: T,
-    flow: MutableSharedFlow<T>,
-    channel: Channel<T>,
-) {
-    flow.emit(value)
-    channel.send(value)
+    println(time)
 }
