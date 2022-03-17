@@ -1,12 +1,6 @@
-import java.util.Calendar
-
 fun main() {
-    val calendar = Calendar.getInstance()
-    calendar.add(Calendar.DAY_OF_MONTH, 20)
-    val date = listOf(
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH) + 1,
-        calendar.get(Calendar.DAY_OF_MONTH)
-    )
-    println(date)
+    println(Test(1, "A").hashCode())
+    println(Test(1, "A").hashCode())
 }
+
+class Test(val a: Int, val b: String)
