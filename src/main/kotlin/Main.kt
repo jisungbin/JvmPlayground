@@ -1,21 +1,12 @@
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import java.util.Calendar
 
-@OptIn(ExperimentalTime::class)
-fun main(): Unit = runBlocking {
-    val time = measureTime {
-        val one = async {
-            delay(1000)
-            1
-        }
-        val two = async {
-            delay(1000)
-            2
-        }
-        println(one.await() + two.await())
-    }
-    println(time)
+fun main() {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_MONTH, 20)
+    val date = listOf(
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH) + 1,
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+    println(date)
 }
