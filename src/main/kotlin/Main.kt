@@ -1,6 +1,12 @@
-fun main() {
-    println(Test(1, "A").hashCode())
-    println(Test(1, "A").hashCode())
-}
+class IntHolder(val int: Int)
 
-class Test(val a: Int, val b: String)
+data class IntHolders(
+    val one: IntHolder,
+    val two: IntHolder
+)
+
+fun main() {
+    val one = IntHolders(IntHolder(1), IntHolder(2))
+    val two = IntHolders(IntHolder(1), IntHolder(2))
+    println(one == two)
+}
