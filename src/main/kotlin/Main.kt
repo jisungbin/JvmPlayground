@@ -1,12 +1,9 @@
-class IntHolder(val int: Int)
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-data class IntHolders(
-    val one: IntHolder,
-    val two: IntHolder
-)
+fun main() = runBlocking {
+    launch {
 
-fun main() {
-    val one = IntHolders(IntHolder(1), IntHolder(2))
-    val two = IntHolders(IntHolder(1), IntHolder(2))
-    println(one == two)
+    }
+    Unit
 }
