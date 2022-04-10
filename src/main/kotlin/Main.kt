@@ -1,9 +1,10 @@
-fun test(action: () -> String) {
-    print(action())
+fun test(action: (index: Int) -> Unit) {
+    print(action(1))
 }
 
 fun main() {
-    test {
-        "Bye, world!"
+    test { itt: In\
+        t ->
+        print(itt)
     }
 }
