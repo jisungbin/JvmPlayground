@@ -7,6 +7,8 @@ fun main() = runBlocking {
 
 suspend fun awesomeSuspendFunction() {
     println("Hello, ")
+    var int = 1
     delay(1000)
-    println("world!")
+    int++
+    println("world!, int is $int")
 }
