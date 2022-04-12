@@ -8,13 +8,8 @@ val seq = sequence {
     println("Generating third")
     yield(3)
     println("Done")
-}
+}.toList().also(::println)
 
 fun main() {
-    repeat(100) {
-        thread {
-            Thread.sleep(1000L)
-            print(".")
-        }
-    }
+    seq
 }
