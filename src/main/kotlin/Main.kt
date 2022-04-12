@@ -7,6 +7,7 @@ val seq = sequence {
     yield(2)
     println("Generating third")
     yield(3)
+    kotlinx.coroutines.delay(100)
     println("Done")
 }.toList().also(::println)
 
