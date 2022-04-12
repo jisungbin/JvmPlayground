@@ -17,11 +17,14 @@ import kotlinx.coroutines.DelayKt;
 
 public class Main {
     public static void main(String[] args) {
-        Function<Void> function = new Function<Void>() {
-            public void returnTest() {
-                return;
-            }
-        };
+        switch (1) {
+            case 0:
+                System.out.println("0");
+                break;
+            case 1:
+                System.out.println("1");
+                break;
+        }
     }
 }
 
