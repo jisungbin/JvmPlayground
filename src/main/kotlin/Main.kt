@@ -1,16 +1,12 @@
-import kotlin.concurrent.thread
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
-val seq = sequence {
-    println("Generating first")
-    yield(1)
-    println("Generating second")
-    yield(2)
-    println("Generating third")
-    yield(3)
-    kotlinx.coroutines.delay(100)
-    println("Done")
-}.toList().also(::println)
+fun main() = runBlocking {
+    awesomeSuspendFunction()
+}
 
-fun main() {
-    seq
+suspend fun awesomeSuspendFunction() {
+    println("Hello, ")
+    delay(1000)
+    println("world!")
 }
