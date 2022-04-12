@@ -1,4 +1,10 @@
+import kotlin.concurrent.thread
+
 fun main() {
-    println(listOf(1, 1) == listOf(1, 1))
-    println(listOf(1, 1) === listOf(1, 1))
+    repeat(100) {
+        thread {
+            Thread.sleep(1000L)
+            print(".")
+        }
+    }
 }
