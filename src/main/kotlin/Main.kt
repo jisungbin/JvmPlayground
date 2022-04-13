@@ -2,10 +2,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
-    delayOneSec()
+    delay(100)
     println("Bye, world!")
-}
-
-suspend inline fun delayOneSec() {
-    delay(1000)
 }
