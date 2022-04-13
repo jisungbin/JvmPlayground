@@ -17,9 +17,11 @@ import kotlinx.coroutines.DelayKt;
 
 public class Main {
     public static void main(String[] args) {
-        switch (1) {
+        int value = 0;
+        switch (value) {
             case 0:
                 System.out.println("0");
+                value = 1;
                 break;
             case 1:
                 System.out.println("1");
