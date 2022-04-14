@@ -1,21 +1,26 @@
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 import kotlin.coroutines.suspendCoroutine
 
-private val executor = Executors.newSingleThreadScheduledExecutor {
-    Thread(it, "scheduler").apply { isDaemon = true }
-}
 
-suspend fun delay(timeMillis: Long): Unit = suspendCoroutine { cont ->
-    executor.schedule(
-        {
-            cont.resumeWith(Result.success(Unit))
-        }, timeMillis, TimeUnit.MILLISECONDS
-    )
-}
-
-suspend fun main() {
-    println("Before")
-    delay(1000)
-    println("After")
+fun main() {
+    thread(isDaemon = true) {
+        Thread.sleep(1000L)
+        println("World!")
+        println("Thread (2): ${Thread.currentThread().name}")
+    }
+    thread(isDaemon = true) {
+        Thread.sleep(1000L)
+        println("World!")
+        println("Thread (3): ${Thread.currentThread().name}")
+    }
+    thread(isDaemon = true) {
+        Thread.sleep(1000L)
+        println("World!")
+        println("Thread (4): ${Thread.currentThread().name}")
+    }
+    println("Hello, ")
+    println("Thread (1): ${Thread.currentThread().name}")
+    Thread.sleep(2000L)
 }
