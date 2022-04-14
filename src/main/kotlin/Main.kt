@@ -1,21 +1,15 @@
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
-fun main(): Unit = runBlocking {
-//    val user = readUser()
-    b()
-    b()
-    b()
-    println("user")
-}
+fun main() {
+    var i = 0
+    while (i < 10) {
+        try {
+            println(i)
+            if (++i > 5) return
+        } catch (ignored: Exception) {
 
-suspend fun b() {
-    for (i in 1..10) {
-        c(i)
+        }
     }
-}
-
-suspend fun c(i: Int) {
-    delay(i * 100L)
-    println("Tick")
+    println("while finished.")
 }
