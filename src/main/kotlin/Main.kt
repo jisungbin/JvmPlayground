@@ -1,26 +1,20 @@
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
-import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-
-fun main() {
-    thread(isDaemon = true) {
-        Thread.sleep(1000L)
-        println("World!")
-        println("Thread (2): ${Thread.currentThread().name}")
+@OptIn(DelicateCoroutinesApi::class)
+fun main() = runBlocking {
+    val value = GlobalScope.async {
+        println("Start async function.")
+        delay(100)
+        100
     }
-    thread(isDaemon = true) {
-        Thread.sleep(1000L)
-        println("World!")
-        println("Thread (3): ${Thread.currentThread().name}")
-    }
-    thread(isDaemon = true) {
-        Thread.sleep(1000L)
-        println("World!")
-        println("Thread (4): ${Thread.currentThread().name}")
-    }
-    println("Hello, ")
-    println("Thread (1): ${Thread.currentThread().name}")
-    Thread.sleep(2000L)
+    delay(1000)
+    println("After 1000 ms sleep.")
+    println(value.await())
 }
