@@ -15,19 +15,5 @@ import kotlin.jvm.internal.Intrinsics;
 import kotlinx.coroutines.BuildersKt;
 import kotlinx.coroutines.DelayKt;
 
-public class Main {
-    public static void main(String[] args) {
-        int value = 0;
-        switch (value) {
-            case 0:
-                System.out.println("0");
-                value = 1;
-                break;
-            case 1:
-                System.out.println("1");
-                break;
-        }
-    }
-}
 
 
