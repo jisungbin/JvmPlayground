@@ -1,6 +1,10 @@
 import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 fun main() {
-    val context = (CoroutineName("Name2") + CoroutineName("Name3")).minusKey(CoroutineName)
-    println(context[CoroutineName]?.name)
+    GlobalScope.launch {
+
+    }
 }
