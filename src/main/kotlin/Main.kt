@@ -1,18 +1,19 @@
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-suspend fun main() = coroutineScope {
-    launch {
+suspend fun main(): Unit = coroutineScope {
+    val job = Job()
+    launch(/*job*/) { // the new job replaces one from parent
         delay(1000)
-        println("1000 ms sleep.")
-        println("Inner job: ${coroutineContext.job}")
+        println("Text 1")
     }
-    println("start sleeping")
-    println("Outer job: ${coroutineContext.job}")
-    println("Outer job childrens: ${coroutineContext.job.children.joinToString(", ")}")
+    launch(job) { // the new job replaces one from parent
+        delay(2000)
+        println("Text 2")
+    }
+    // job.join() // Here we will await forever
+    println("Bye, world!")
 }
