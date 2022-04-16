@@ -2,18 +2,17 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 suspend fun main(): Unit = coroutineScope {
     val job = Job()
-    launch(/*job*/) { // the new job replaces one from parent
+    launch(/*job*/) {
         delay(1000)
         println("Text 1")
     }
-    launch(job) { // the new job replaces one from parent
+    launch(job) {
         delay(2000)
         println("Text 2")
     }
-    // job.join() // Here we will await forever
+    job.cancel()
     println("Bye, world!")
 }
