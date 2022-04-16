@@ -1,10 +1,11 @@
-fun main() {
-    getSequence().forEach(::println)
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.flow
+
+suspend fun main(): Unit = coroutineScope {
+    getFlow().collect {
+    }
 }
 
-fun getSequence(): Sequence<String> = sequence {
-    repeat(3) {
-//        delay(1000) // Compilation error
-        yield("User$it")
-    }
+fun getFlow() = flow {
+    emit(1)
 }
