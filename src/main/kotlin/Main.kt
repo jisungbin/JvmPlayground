@@ -1,21 +1,24 @@
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
+import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 
-suspend fun main(): Unit = coroutineScope {
-    val job = Job()
-    launch(/*job*/) {
+suspend fun main() = supervisorScope {
+    // withContext(CoroutineExceptionHandler { _, throwable -> println("Exception: $throwable") }) {
+    val str1 = async<String> {
         delay(1000)
-        println("Text 1")
+        throw Exception()
     }
-    launch(job) {
+    val str2 = async {
         delay(2000)
-        yield()
-        println("Text 2")
+        "Text2"
     }
-    job.cancel()
-    job.invokeOnCompletion {  }
-    println("Bye, world!")
+    try {
+        println(str1.await())
+    } catch (e: Exception) {
+        println(e)
+    }
+    println(str2.await())
 }
