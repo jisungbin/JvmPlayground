@@ -1,19 +1,23 @@
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
-suspend fun main() = runBlocking {
-    val coroutine = MyCustomCoroutineContextWithoutJob(Dispatchers.Default).launch {
-        delay(3000)
-        println("Delayed 3000 ms.")
+@OptIn(ExperimentalCoroutinesApi::class)
+suspend fun main(): Unit = coroutineScope {
+    produce {
+        repeat(100) { value ->
+            delay(500)
+            send(value)
+        }
+    }.also { channel ->
+        repeat(3) { index ->
+            launch {
+                for (value in channel) {
+                    println("Receive value in $index coroutine: $value")
+                }
+            }
+        }
     }
-    coroutine.cancelAndJoin()
-    delay(4000)
-    println("Coroutine completed.")
 }
-
-class MyCustomCoroutineContextWithoutJob(override val coroutineContext: CoroutineContext) : CoroutineScope
