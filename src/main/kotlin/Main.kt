@@ -1,17 +1,11 @@
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.concurrent.thread
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
-@OptIn(ExperimentalCoroutinesApi::class)
-fun main(): Unit = runBlocking {
-    try {
-        coroutineScope {
-            throw Exception("A!")
-        }
-    } catch (ignored: Exception) {
+suspend fun main() = coroutineScope {
+    thread {
+        println("Start!")
+        Thread.sleep(1000)
+        println("Kotlin Coroutines World!")
     }
-    launch {
-        println("B!")
-    }
+    println("Hello")
 }
