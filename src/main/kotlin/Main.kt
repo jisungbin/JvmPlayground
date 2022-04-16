@@ -2,6 +2,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 
 suspend fun main(): Unit = coroutineScope {
     val job = Job()
@@ -11,6 +12,7 @@ suspend fun main(): Unit = coroutineScope {
     }
     launch(job) {
         delay(2000)
+        yield()
         println("Text 2")
     }
     job.cancel()
