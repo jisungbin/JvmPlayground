@@ -14,5 +14,6 @@ suspend fun main(): Unit = coroutineScope {
         println("Text 2")
     }
     job.cancel()
+    job.invokeOnCompletion {  }
     println("Bye, world!")
 }
