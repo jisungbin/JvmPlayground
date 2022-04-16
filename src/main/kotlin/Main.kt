@@ -3,7 +3,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.supervisorScope
 
 suspend fun main() = supervisorScope {
-    // withContext(CoroutineExceptionHandler { _, throwable -> println("Exception: $throwable") }) {
     val str1 = async<String> {
         delay(1000)
         throw Exception()
