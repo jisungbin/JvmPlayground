@@ -1,9 +1,6 @@
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.supervisorScope
-import kotlinx.coroutines.withContext
 
 suspend fun main() = supervisorScope {
     // withContext(CoroutineExceptionHandler { _, throwable -> println("Exception: $throwable") }) {
