@@ -1,17 +1,8 @@
-@file:Suppress("RedundantSuspendModifier")
-
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.job
-import kotlinx.coroutines.launch
-
-suspend fun main(): Unit = coroutineScope {
-    launch {
-        println("Inner job: " + coroutineContext.job)
-        delay(1000)
-        println("1000 ms sleep.")
+fun main() {
+    try {
+        println("Throw exception!")
+        throw Exception()
+    } finally {
+        println("Program ended.")
     }
-    println("Outer job: " + coroutineContext.job)
-    println("Outer job children: " + coroutineContext.job.children.toList())
-    println("Hey, ")
 }
