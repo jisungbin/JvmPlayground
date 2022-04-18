@@ -1,8 +1,4 @@
 fun main() {
-    try {
-        println("Throw exception!")
-        throw Exception()
-    } finally {
-        println("Program ended.")
-    }
+   val list = intArrayOf(1)
+   list.reverse()
 }
