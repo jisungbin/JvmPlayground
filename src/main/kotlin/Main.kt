@@ -1,15 +1,15 @@
-import java.io.BufferedReader
-import java.io.FileReader
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-fun sequenceOfLines(fileName: String) = sequence {
-    BufferedReader(FileReader(fileName)).use {
-        while (true) {
-            yield(it.readLine() ?: break)
-        }
+suspend fun main(): Unit = coroutineScope {
+    launch {
+        delay(1000)
+        println("Slept 1000 ms.")
     }
-}
-
-fun main() {
-    sequenceOfLines("https://github.com/kotlin/kotlin-coroutines-examples/tree/master/examples/sequence/sequenceOfLines.kt")
-        .forEach(::println)
+    launch {
+        delay(300)
+        println("Slept 300 ms.")
+    }
+    println("sleeping...")
 }
