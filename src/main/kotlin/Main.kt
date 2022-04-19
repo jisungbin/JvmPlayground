@@ -1,6 +1,6 @@
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.supervisorScope
 
 /*
 const val SUSPENDED = 1000
@@ -27,7 +27,7 @@ suspend fun main() {
     println("Value: ${getIntAsync().await()}")
 }
 
-suspend fun getIntAsync() = coroutineScope {
+suspend fun getIntAsync() = supervisorScope {
     delay(100)
     async {
         delay(100)
