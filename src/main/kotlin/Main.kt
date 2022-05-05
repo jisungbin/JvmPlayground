@@ -1,9 +1,18 @@
-fun returnNothing(): Nothing {
-    println(1)
-    throw Exception()
-}
 
-fun main() {
-    returnNothing()
-    println(1)
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+
+suspend fun main(): Unit = coroutineScope {
+    launch {
+        println("1")
+        throw Exception()
+    }
+    launch {
+        println("2")
+        throw Exception()
+    }
+    launch {
+        println("3")
+        throw Exception()
+    }
 }
