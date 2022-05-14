@@ -1,9 +1,16 @@
-@Target(AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.RUNTIME)
-annotation class FunAnn
+interface Test {
+    fun sayHi()
+}
 
-inline fun myFun(a: Int, f: (Int) -> String): String = f(a)
+object TestScope : Test {
+    override fun sayHi() {
+        println("Hi")
+    }
+}
 
-fun main() {
-    myFun(1) @FunAnn { it.toString() }
+@Target(AnnotationTarget.TYPE)
+annotation class TestAnn
+
+fun test(func: Test.() -> Unit) {
+    func(func = TestScope)
 }
