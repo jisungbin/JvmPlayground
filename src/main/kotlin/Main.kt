@@ -1,18 +1,9 @@
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class FunAnn
 
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+inline fun myFun(a: Int, f: (Int) -> String): String = f(a)
 
-suspend fun main(): Unit = coroutineScope {
-    launch {
-        println("1")
-        throw Exception()
-    }
-    launch {
-        println("2")
-        throw Exception()
-    }
-    launch {
-        println("3")
-        throw Exception()
-    }
+fun main() {
+    myFun(1) @FunAnn { it.toString() }
 }
