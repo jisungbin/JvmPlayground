@@ -1,12 +1,18 @@
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
+import Test.Object.VariableInObject
 
+object Test {
+    const val Variable = "Bye"
+
+    object Object {
+        const val VariableInObject = "World"
+    }
+}
+
+// https://stackoverflow.com/questions/44455328/why-i-cannot-refer-to-a-nested-object-from-val-or-typealias-referring-to-an-obje
 fun main() {
-    val flow = MutableSharedFlow<Boolean>().shareIn(
-        started = SharingStarted.WhileSubscribed(3000),
-        scope = CoroutineScope(Dispatchers.Default)
-    )
+    with(Test) {
+        listOf(
+            Variable, VariableInObject
+        )
+    }
 }
