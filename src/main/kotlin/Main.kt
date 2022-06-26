@@ -9,6 +9,7 @@ fun main(): Unit = runBlocking {
     println("Started.")
     launch(job) {
         try {
+            println("Waiting until cancellation...")
             awaitCancellation()
         } finally {
             println("Canceled.")
