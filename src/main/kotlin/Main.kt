@@ -1,16 +1,20 @@
-
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 fun main(): Unit = runBlocking {
-    val job = Job().apply {
-        invokeOnCompletion {
-            println("Job completion!!")
+    val job = Job()
+    println("Started.")
+    launch(job) {
+        try {
+            awaitCancellation()
+        } finally {
+            println("Canceled.")
         }
     }
-    withContext(job) {
-        println("Bye, world!")
-    }
+    delay(1000)
+    println("Wait 1000 second and cancel job.")
     job.cancel()
 }
