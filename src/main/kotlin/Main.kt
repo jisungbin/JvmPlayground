@@ -6,16 +6,17 @@ import kotlinx.coroutines.runBlocking
 
 fun main(): Unit = runBlocking {
     val job = Job()
-    println("Started.")
     launch(job) {
         try {
-            println("Waiting until cancellation...")
+            println("Await cancellation.")
             awaitCancellation()
         } finally {
-            println("Canceled.")
+            println("Cancelled.")
         }
     }
-    delay(1000)
-    println("Wait 1000 second and cancel job.")
-    job.cancel()
+    launch {
+        delay(1000)
+        job.cancel()
+        println("Cancel job after 1000 ms.")
+    }
 }
