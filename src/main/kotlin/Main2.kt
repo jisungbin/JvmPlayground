@@ -1,11 +1,6 @@
 fun main() {
-    Data("11", 11, false).hashCode().also(::println)
-    Data("11", 11, false).hashCode().also(::println)
-    Data("11", 11, false).hashCode().also(::println)
+    val one = 1
+    val two = one + 1
+    println("one: $one")
+    println("two: $two")
 }
-
-data class Data(
-    val name: String,
-    val id: Int,
-    val tf: Boolean
-)
