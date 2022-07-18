@@ -1,3 +1,5 @@
+
+
 fun main() {
     println("1".hashCode())
     println("2".hashCode())
@@ -9,6 +11,5 @@ fun main() {
     repeat(3) {
         println(valueLambda.hashCode())
         value++
-        valueLambda.invoke()
     }
 }
