@@ -1,22 +1,14 @@
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+fun main() {
+    println("1".hashCode())
+    println("2".hashCode())
+    println("3".hashCode())
 
-fun main(): Unit = runBlocking {
-    val job = Job()
-    launch(job) {
-        try {
-            println("Await cancellation.")
-            awaitCancellation()
-        } finally {
-            println("Cancelled.")
-        }
-    }
-    launch {
-        delay(1000)
-        job.cancel()
-        println("Cancel job after 1000 ms.")
+    var value = 1
+    val valueLambda = { println(value) }
+
+    repeat(3) {
+        println(valueLambda.hashCode())
+        value++
+        valueLambda.invoke()
     }
 }
