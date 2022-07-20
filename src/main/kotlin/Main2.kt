@@ -1,9 +1,6 @@
 fun main() {
-    val data = mutableListOf(0).also(::plus)
-    println(data)
-}
-
-fun plus(data: MutableList<Int>) {
-    data.add(1)
-    data + 2
+    val one = 1
+    val two = one + 1
+    println("one: $one")
+    println("two: $two")
 }
