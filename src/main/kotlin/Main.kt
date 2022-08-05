@@ -1,3 +1,5 @@
 fun main() {
-    println("1" === String(CharArray(1)))
+    val old = mutableListOf(1)
+    val new = old.add(2)
+    println(old == new)
 }
