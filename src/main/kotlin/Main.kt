@@ -1,4 +1,3 @@
-class C {
-    val elementList: List<Int>
-        field = mutableListOf()
+fun main() {
+    print(System.getProperty("os.arch"))
 }
