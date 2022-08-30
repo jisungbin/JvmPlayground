@@ -1,13 +1,14 @@
-@file:Suppress("UNCHECKED_CAST")
+open class Parent(open val name: String = "1")
+interface IParent {
+    val name: String
+}
 
-class Test {
-    val list = listOf("1")
+class Child : IParent, Parent("1") {
+    // 'name' in 'Parent' is final and cannot be overridden
+    override val name = "2"
 }
 
 fun main() {
-    val testClass = Class.forName("Test")
-    val test = testClass.getDeclaredConstructor().newInstance()
-    val getList = testClass.getDeclaredMethod("getList")
-    val list = getList(test) as List<String>
-    println(list)
+    val child = Child()
+    println(child.name)
 }
