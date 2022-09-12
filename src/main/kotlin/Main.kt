@@ -1,19 +1,27 @@
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.coroutines.resume
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 fun main() {
-    var visited = false
-    val firstContinuation = Continuation<Unit>(context = EmptyCoroutineContext) {
-        when (visited) {
-            true -> println("Visited")
-            else -> println("Not visited")
-        }
+    continuationNetworkCall {
+        println("Network Call Finish")
     }
-    val secondContinuation = Continuation<Unit>(context = EmptyCoroutineContext) {
-        visited = true
-    }
-    firstContinuation.resume(Unit) // Not visited
-    secondContinuation.resume(Unit)
-    firstContinuation.resume(Unit) // Visited
+}
+
+fun continuationNetworkCall(callcc: () -> Unit) {
+    val client = OkHttpClient()
+    val request = Request.Builder()
+        .url("https://sungb.in")
+        .build()
+    val response = client.newCall(request).execute()
+    println(response.body?.string())
+    callcc()
+}
+
+fun directNetworkCall() {
+    val client = OkHttpClient()
+    val request = Request.Builder()
+        .url("https://sungb.in")
+        .build()
+    val response = client.newCall(request).execute()
+    println(response.body?.string())
 }
