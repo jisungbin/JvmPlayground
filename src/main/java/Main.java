@@ -1,5 +1,5 @@
 public class Main {
-    public void Test() {
-        int va = 1;
+    public static void main(String[] args) {
+        System.out.println("2학년 지성빈");
     }
 }
