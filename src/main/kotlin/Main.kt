@@ -1,3 +1,9 @@
+import kotlin.coroutines.Continuation
+import kotlinx.coroutines.Dispatchers
+
 fun main() {
-    (1..10).map(Int::toString)
+    val cc = Continuation<Int>(Dispatchers.Default) {
+        println("Hello, World!: ${it.getOrNull()}")
+    }
+    // cc.resume(1)
 }
