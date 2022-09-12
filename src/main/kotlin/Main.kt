@@ -1,9 +1,19 @@
 import kotlin.coroutines.Continuation
-import kotlinx.coroutines.Dispatchers
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.coroutines.resume
 
 fun main() {
-    val cc = Continuation<Int>(Dispatchers.Default) {
-        println("Hello, World!: ${it.getOrNull()}")
+    var visited = false
+    val firstContinuation = Continuation<Unit>(context = EmptyCoroutineContext) {
+        when (visited) {
+            true -> println("Visited")
+            else -> println("Not visited")
+        }
     }
-    // cc.resume(1)
+    val secondContinuation = Continuation<Unit>(context = EmptyCoroutineContext) {
+        visited = true
+    }
+    firstContinuation.resume(Unit) // Not visited
+    secondContinuation.resume(Unit)
+    firstContinuation.resume(Unit) // Visited
 }
