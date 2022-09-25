@@ -1,10 +1,14 @@
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+@RequiresOptIn(
+    message = "TEST",
+)
+annotation class TestOptIn
 
+@TestOptIn
+private const val One = 1
+
+@OptIn(TestOptIn::class)
+fun getOne() = One
 
 fun main() {
-    CoroutineScope(context = Dispatchers.Default).launch {
-        println("I was slept...!!")
-    }
+    print(getOne())
 }
