@@ -1,10 +1,11 @@
 public class Main {
-
-    static double PI = 3.141592;
-    static double rd = 15.3;
-
     public static void main(String[] args) {
-        System.out.println("20211152 지성빈 변수");
-        System.out.println("원주율 " + PI + ", 반지름 " + rd + "cm 인 원의 면적은 " + String.format("%e", PI * rd * rd) + "cm^2 입니다.");
+        System.out.println("20220927 지성빈 연산자");
+        int x = 6, y = 7;
+        System.out.println("!(x>6): " + !(x > 6));
+        System.out.println("(x == 6 && x == 5): " + (x == 6 && x == 5));
+        System.out.println("(x == 6 || x == 5): " + (x == 6 || x == 5));
+        System.out.println("(x > -1 && y < 10): " + (x > -1 && y < 10));
+        System.out.println("(x > 10 && y < 5): " + (x > 10 && y < 5));
     }
 }
