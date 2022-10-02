@@ -11,19 +11,6 @@ private val targets = listOf(
     "target_ui-components" to "UiComponents",
 )
 
-// contains(github.event.pull_request.labels.*.name, '${type.first}') &&
-// contains(github.event.pull_request.labels.*.name, '${target.first}')
-
-// ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
-
-// - name: Bump artifect version (type_${type.first}, target_${target.first})
-//   if: ${{
-//     (contains(github.event.pull_request.labels.*.name, '${type.first}') &&
-//       contains(github.event.pull_request.labels.*.name, '${target.first}')
-//     )
-//     }}
-//   run: ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
-
 fun main() {
     val steps = mutableListOf<String>()
     types.forEach { type ->
@@ -31,9 +18,8 @@ fun main() {
             val step = """
                 |- name: Bump artifect version (type_${type.first}, target_${target.first})
                 |  if: ${"$"}{{
-                |    (contains(github.event.pull_request.labels.*.name, '${type.first}') &&
+                |      contains(github.event.pull_request.labels.*.name, '${type.first}') &&
                 |      contains(github.event.pull_request.labels.*.name, '${target.first}')
-                |    )
                 |    }}
                 |  run: ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
             """.trimMargin()
