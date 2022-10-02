@@ -36,7 +36,7 @@ fun main() {
                 |    )
                 |    }}
                 |  run: ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
-            """.trimIndent()
+            """.trimMargin()
             steps.add(step)
         }
     }
