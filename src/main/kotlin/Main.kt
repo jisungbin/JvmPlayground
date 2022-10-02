@@ -16,7 +16,7 @@ private val targets = listOf(
 
 // ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
 
-// - name: Bump artifect version (type: ${type.first}, target: ${target.first})
+// - name: Bump artifect version (type_${type.first}, target_${target.first})
 //   if: ${{
 //     (contains(github.event.pull_request.labels.*.name, '${type.first}') &&
 //       contains(github.event.pull_request.labels.*.name, '${target.first}')
@@ -29,7 +29,7 @@ fun main() {
     types.forEach { type ->
         targets.forEach { target ->
             val step = """
-                |- name: Bump artifect version (type: ${type.first}, target: ${target.first})
+                |- name: Bump artifect version (type_${type.first}, target_${target.first})
                 |  if: ${"$"}{{
                 |    (contains(github.event.pull_request.labels.*.name, '${type.first}') &&
                 |      contains(github.event.pull_request.labels.*.name, '${target.first}')
