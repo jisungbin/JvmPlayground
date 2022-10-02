@@ -41,6 +41,25 @@ fun playgroundVersionBump() {
     println(steps.joinToString("\n\n"))
 }
 
+fun publishSteps() {
+    val targets = listOf(
+        "target_lint-core" to "lint-core-publish",
+        "target_lint-quack" to "lint-quack-publish",
+        "target_lint-compose" to "lint-compose-publish",
+        "target_ui-components" to "ui-components",
+    )
+    val steps = mutableListOf<String>()
+    targets.forEach { target ->
+        val step = """
+            |- name: Publish ${target.second} to MavenCentral
+            |  if: contains(github.event.pull_request.labels.*.name, '${target.first}')
+            |  run: ./gradlew :${target.second}:publish --no-paralle
+            """.trimMargin()
+        steps.add(step)
+    }
+    println(steps.joinToString("\n\n"))
+}
+
 fun main() {
-    artifectVersionBump()
+    publishSteps()
 }
