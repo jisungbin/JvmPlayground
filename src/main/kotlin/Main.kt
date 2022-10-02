@@ -1,14 +1,10 @@
-@RequiresOptIn(
-    message = "TEST",
-)
-annotation class TestOptIn
-
-@TestOptIn
-private const val One = 1
-
-@OptIn(TestOptIn::class)
-fun getOne() = One
-
 fun main() {
-    print(getOne())
+    val list = listOf("안녕", "안녕녕", "안녕녕녕", "안녕녕녕녕녕녕녕녕", "안")
+    val index = list.maxBy { item ->
+        item.length
+    }.let { item ->
+        list.indexOf(item)
+    }
+    println(index)
+    println(list[index])
 }
