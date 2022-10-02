@@ -1,54 +1,44 @@
-import java.io.File
+private val types = listOf(
+    "bump_major" to "Major",
+    "bump_minor" to "Minor",
+    "bump_patch" to "Patch",
+)
 
-val file = File("/Users/jisungbin/AndroidStudioProjects/duckie-quack-quack/playground-version.txt")
-// major=0
-// minor=1
-// patch=0
+private val targets = listOf(
+    "target_lint-core" to "LintCore",
+    "target_lint-quack" to "LintQuack",
+    "target_lint-compose" to "LintCompose",
+    "target_ui-components" to "UiComponents",
+)
 
-enum class VersionType {
-    Majer,
-    Minor,
-    Patch;
-}
+// contains(github.event.pull_request.labels.*.name, '${type.first}') &&
+// contains(github.event.pull_request.labels.*.name, '${target.first}')
 
-fun bumpVersion(
-    type: VersionType,
-): String {
-    val lines = file.readLines().toMutableList()
-    when (type) {
-        VersionType.Majer -> {
-            val major = lines[0].split("=")[1].toInt()
-            lines[0] = "major=${major + 1}"
-            lines[1] = "minor=0"
-            lines[2] = "patch=0"
-        }
-        VersionType.Minor -> {
-            val minor = lines[1].split("=")[1].toInt()
-            lines[1] = "minor=${minor + 1}"
-            lines[2] = "patch=0"
-        }
-        VersionType.Patch -> {
-            val patch = lines[2].split("=")[1].toInt()
-            lines[2] = "patch=${patch + 1}"
-        }
-    }
-    return lines.joinToString(
-        separator = "\n",
-    )
-}
+// ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
 
-fun getVersion(
-    type: VersionType,
-) = file.readLines()[type.ordinal].split("=")[1].toInt()
+// - name: Bump artifect version (type: ${type.first}, target: ${target.first})
+//   if: ${{
+//     (contains(github.event.pull_request.labels.*.name, '${type.first}') &&
+//       contains(github.event.pull_request.labels.*.name, '${target.first}')
+//     )
+//     }}
+//   run: ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
 
 fun main() {
-    VersionType.values().forEach {
-        println(bumpVersion(it))
-        println("-----------")
+    val steps = mutableListOf<String>()
+    types.forEach { type ->
+        targets.forEach { target ->
+            val step = """
+                |- name: Bump artifect version (type: ${type.first}, target: ${target.first})
+                |  if: ${"$"}{{
+                |    (contains(github.event.pull_request.labels.*.name, '${type.first}') &&
+                |      contains(github.event.pull_request.labels.*.name, '${target.first}')
+                |    )
+                |    }}
+                |  run: ./gradlew bumpVersion -Ptype="${type.second}" -Ptarget="${target.second}"
+            """.trimIndent()
+            steps.add(step)
+        }
     }
-    println()
-    VersionType.values().forEach {
-        println(getVersion(it))
-        println("-----------")
-    }
+    println(steps.joinToString("\n\n"))
 }
