@@ -19,10 +19,13 @@ fun bumpVersion(
         VersionType.Majer -> {
             val major = lines[0].split("=")[1].toInt()
             lines[0] = "major=${major + 1}"
+            lines[1] = "minor=0"
+            lines[2] = "patch=0"
         }
         VersionType.Minor -> {
             val minor = lines[1].split("=")[1].toInt()
             lines[1] = "minor=${minor + 1}"
+            lines[2] = "patch=0"
         }
         VersionType.Patch -> {
             val patch = lines[2].split("=")[1].toInt()
@@ -34,9 +37,18 @@ fun bumpVersion(
     )
 }
 
+fun getVersion(
+    type: VersionType,
+) = file.readLines()[type.ordinal].split("=")[1].toInt()
+
 fun main() {
     VersionType.values().forEach {
         println(bumpVersion(it))
+        println("-----------")
+    }
+    println()
+    VersionType.values().forEach {
+        println(getVersion(it))
         println("-----------")
     }
 }
