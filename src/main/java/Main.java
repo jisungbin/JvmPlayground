@@ -1,11 +1,11 @@
+@SuppressWarnings("ALL")
 public class Main {
     public static void main(String[] args) {
-        System.out.println("20220927 지성빈 연산자");
-        int x = 6, y = 7;
-        System.out.println("!(x>6): " + !(x > 6));
-        System.out.println("(x == 6 && x == 5): " + (x == 6 && x == 5));
-        System.out.println("(x == 6 || x == 5): " + (x == 6 || x == 5));
-        System.out.println("(x > -1 && y < 10): " + (x > -1 && y < 10));
-        System.out.println("(x > 10 && y < 5): " + (x > 10 && y < 5));
+        System.out.println("20221003 지성빈 반복");
+        int i = 1, sum = 0;
+        do {
+            sum += i++;
+        } while (i <= 100);
+        System.out.println("1 부터 100 까지 합 = " + sum);
     }
 }
