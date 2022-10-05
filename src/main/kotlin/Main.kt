@@ -1,7 +1,4 @@
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 fun main() {
     runBlocking(
@@ -17,9 +14,7 @@ fun main() {
             delay(1000)
         }
         launch(
-            context = CoroutineExceptionHandler { coroutineContext, throwable ->
-                println("Caught $throwable in $coroutineContext")
-            },
+            context = Dispatchers.IO,
         ) {
             try {
                 job.cancel()
