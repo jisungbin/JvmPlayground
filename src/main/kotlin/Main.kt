@@ -1,3 +1,7 @@
 fun main() {
-    println("Hello, world!")
+    println(::hi.name)
+}
+
+fun hi() {
+    println("Say bye.")
 }
