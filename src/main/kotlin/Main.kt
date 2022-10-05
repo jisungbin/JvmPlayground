@@ -9,10 +9,18 @@ fun main() {
             println("Caught $throwable in $coroutineContext")
         },
     ) {
-        val job = launch {
+        val job = launch(
+            context = CoroutineExceptionHandler { coroutineContext, throwable ->
+                println("Caught $throwable in $coroutineContext")
+            },
+        ) {
             delay(1000)
         }
-        launch {
+        launch(
+            context = CoroutineExceptionHandler { coroutineContext, throwable ->
+                println("Caught $throwable in $coroutineContext")
+            },
+        ) {
             try {
                 job.cancel()
                 job.join()
