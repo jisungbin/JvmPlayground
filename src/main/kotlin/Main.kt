@@ -1,7 +1,5 @@
-fun main() {
-    println(::hi.name)
-}
+import kotlinx.coroutines.Job
 
-fun hi() {
-    println("Say bye.")
+fun main() {
+    Job()
 }
