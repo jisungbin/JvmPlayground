@@ -13,8 +13,9 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.compose.compiler:compiler:1.1.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 }
 
