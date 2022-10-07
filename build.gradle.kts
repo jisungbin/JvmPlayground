@@ -10,12 +10,16 @@ version = "1.0.0"
 
 repositories {
     mavenCentral()
+    maven {
+        setUrl("https://jitpack.io")
+    }
 }
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.github.toss:tuid:0.2.1")
     // implementation("org.jetbrains.compose.compiler:compiler-hosted:1.2.0")
 }
 

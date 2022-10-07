@@ -1,5 +1,7 @@
-import kotlinx.coroutines.Job
+import im.toss.util.tuid.tuid
 
 fun main() {
-    Job()
+    repeat(10) {
+        println(tuid())
+    }
 }
