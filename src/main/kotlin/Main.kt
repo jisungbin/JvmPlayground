@@ -1,7 +1,5 @@
-import im.toss.util.tuid.tuid
+import java.util.*
 
 fun main() {
-    repeat(10) {
-        println(tuid())
-    }
+    UUID.randomUUID()
 }
