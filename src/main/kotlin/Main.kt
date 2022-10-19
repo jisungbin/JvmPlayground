@@ -1,19 +1,25 @@
-sealed interface DuckApiResult<T>
+sealed interface DuckApiResult<T> {
+    data class Exception<T>(val message: String?) : DuckApiResult<T>
+}
 
-class DuckApiException(override val message: String?) : Exception(), DuckApiResult<Nothing>
+sealed class DuckFetchResult<T> : DuckApiResult<T> {
+    data class Success<T>(val value: T) : DuckFetchResult<T>()
+    class Empty<T> : DuckFetchResult<T>()
+}
 
-sealed class DuckFetchResult : DuckApiResult<Nothing> {
-    data class Success<T>(val value: T) : DuckApiResult<T>
-    object Empty : DuckApiResult<Nothing>
+sealed class DuckUpsertResult<T> : DuckApiResult<T> {
+    class Done<T> : DuckUpsertResult<T>()
 }
 
 fun main() {
-    val result: DuckApiResult<Nothing> = DuckApiException(null)
+    val exception: DuckApiResult<Int> = DuckApiResult.Exception("11")
+    val success: DuckApiResult<Int> = DuckFetchResult.Success(1)
     println(
-        when (result) {
-            is DuckApiException -> "DuckApiException"
-            is DuckFetchResult.Success -> "DuckFetchResult.Success: ${result.value}"
+        when (exception) {
+            is DuckApiResult.Exception -> "DuckApiException: ${exception.message}"
+            is DuckFetchResult.Success -> "DuckFetchResult.Success: ${exception.value}"
             is DuckFetchResult.Empty -> "DuckFetchResult.Empty"
+            is DuckUpsertResult.Done -> "DuckUpsertResult.Done"
         }
     )
 }
