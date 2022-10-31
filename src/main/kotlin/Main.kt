@@ -1,11 +1,5 @@
-@Target(
-    AnnotationTarget.PROPERTY,
-)
-@RequiresOptIn(
-    message = "이 필드는 MVP 개발 환경에서는 사용되서는 안됩니다.",
-)
-annotation class Unsupported
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-data class Test(
-    @Unsupported val test: Int,
-)
+private val _flow = MutableStateFlow(1)
+val flow: StateFlow<Int> get() = _flow
