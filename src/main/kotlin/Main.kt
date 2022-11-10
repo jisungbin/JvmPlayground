@@ -1,21 +1,12 @@
 fun main() {
-    val list = mutableListOf<Int>()
-    test(
-        value = run {
-            println(1)
-            list.add(1)
-            1
-        },
-        value2 = run {
-            list.add(2)
-            println(list)
-            2
-        },
-    )
 }
 
-fun test(
-    value: Any,
-    value2: Any,
-) {
+interface Test {
+    var data: Any
+        get() = Class.forName("java.lang.String").newInstance()
+        set(value) = TODO()
+
+    companion object Test
 }
+
+fun Test.test() = one + 1
