@@ -1,12 +1,15 @@
+@JvmInline
+value class QuackModifier(internal val data: QuackModifierData = QuackModifierData())
+
 fun main() {
+    val modifier = QuackModifier()
+        .wrapContent()
+        .fillContent()
 }
 
-interface Test {
-    var data: Any
-        get() = Class.forName("java.lang.String").newInstance()
-        set(value) = TODO()
+fun QuackModifier.wrapContent() = also { data.height = 2 }
+fun QuackModifier.fillContent() = also { data.height = 3 }
 
-    companion object Test
+class QuackModifierData {
+    var height = 1
 }
-
-fun Test.test() = one + 1
