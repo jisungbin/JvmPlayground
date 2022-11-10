@@ -1,4 +1,4 @@
-@file:Suppress("NonAsciiCharacters")
+@file:Suppress("NonAsciiCharacters") // ktlint-disable filename
 
 import java.io.File
 
@@ -37,14 +37,14 @@ fun main() {
             |<img src="../image/${images.first().replace("#", "%23")}.png"/>
             |</body>
             |${
-            if (images.size > 1) {
-                """
+        if (images.size > 1) {
+            """
                 |<h3>실행 결과</h3>
                 |<img src="../image/${images.last().replace("#", "%23")}.png"/>
-                """.trimMargin()
-            } else {
-                ""
-            }
+            """.trimMargin()
+        } else {
+            ""
+        }
         }
             |</html>
         """.trimMargin()
@@ -61,9 +61,9 @@ fun main() {
         |<li>$key</li>
         |<ol>
         |${
-            tables.joinToString("\n") { table ->
-                """<li><a href="./table/${table}.html">${table.split("-").last()}번째 과제</a></li>"""
-            }
+        tables.joinToString("\n") { table ->
+            """<li><a href="./table/$table.html">${table.split("-").last()}번째 과제</a></li>"""
+        }
         }
         |</ol>
         |<hr/>
