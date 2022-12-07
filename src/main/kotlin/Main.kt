@@ -1,22 +1,39 @@
-import java.io.File
-
-fun main() {
-    println("20221120 지성빈 스트림")
-    File("/Users/jisungbin/Downloads/i-hate-java.txt").run {
-        createNewFile()
-        writeText("KOREA")
-        println("from text: ${readText()}")
-        println("from byte: ${readBytes().decodeToString()}")
-
-        writeText(
-            """
-                더하기 a+b=15
-                빼기 a-b=5
-            """.trimIndent()
-        )
-        println("from text: ${readText()}")
-        println("from byte: ${readBytes().decodeToString()}")
-
-        delete()
-    }
+data class MemoryData(
+    val id: Int,
+    val imageUrlList: List<String>,
+    val content: String,
+    val location: LocationData,
+    val address: String,
+    val createdDate: String,
+) {
+    data class LocationData(
+        val latitude: Double,
+        val longitude: Double,
+    )
 }
+
+data class Memory(
+    val id: Int,
+    val imageUrlList: List<String>,
+    val content: String,
+    val location: Location,
+    val address: String,
+    val createdDate: String,
+) {
+    data class Location(
+        val latitude: Double,
+        val longitude: Double,
+    )
+}
+
+fun MemoryData.toDomain() = Memory(
+    id = id,
+    imageUrlList = imageUrlList,
+    content = content,
+    location = Memory.Location(
+        latitude = location.latitude,
+        longitude = location.longitude
+    ),
+    address = address,
+    createdDate = createdDate
+)
