@@ -1,13 +1,14 @@
-import kotlinx.coroutines.*
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-suspend fun main() {
-    val job = Job()
-    withContext(Dispatchers.Default + job) {
-        repeat(100) {
-            println(it)
-            delay(1000)
-        }
+suspend fun main(): Unit = runBlocking {
+    val job = launch {
+        delay(910)
+        println("DONE!")
     }
-    delay(5000)
+    delay(900)
     job.cancelAndJoin()
+    delay(100)
 }
