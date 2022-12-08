@@ -1,39 +1,13 @@
-data class MemoryData(
-    val id: Int,
-    val imageUrlList: List<String>,
-    val content: String,
-    val location: LocationData,
-    val address: String,
-    val createdDate: String,
-) {
-    data class LocationData(
-        val latitude: Double,
-        val longitude: Double,
-    )
-}
+import kotlinx.coroutines.*
 
-data class Memory(
-    val id: Int,
-    val imageUrlList: List<String>,
-    val content: String,
-    val location: Location,
-    val address: String,
-    val createdDate: String,
-) {
-    data class Location(
-        val latitude: Double,
-        val longitude: Double,
-    )
+suspend fun main() {
+    val job = Job()
+    withContext(Dispatchers.Default + job) {
+        repeat(100) {
+            println(it)
+            delay(1000)
+        }
+    }
+    delay(5000)
+    job.cancelAndJoin()
 }
-
-fun MemoryData.toDomain() = Memory(
-    id = id,
-    imageUrlList = imageUrlList,
-    content = content,
-    location = Memory.Location(
-        latitude = location.latitude,
-        longitude = location.longitude
-    ),
-    address = address,
-    createdDate = createdDate
-)
