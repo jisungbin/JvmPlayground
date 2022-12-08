@@ -1,14 +1,14 @@
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 suspend fun main(): Unit = runBlocking {
-    val job = launch {
-        delay(910)
-        println("DONE!")
+    launch {
+        delay(1000)
+        println("1000 slept")
+    }.also { job ->
+        job.invokeOnCompletion {
+            println("finished")
+        }
     }
-    delay(900)
-    job.cancelAndJoin()
-    delay(100)
 }
