@@ -1,23 +1,25 @@
 @file:Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER")
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+private fun test(
+    totalItemsCount: Int,
+    chunkedSize: Int = 3,
+) {
+    val a = (totalItemsCount % chunkedSize).let {
+        if (it != 0) {
+            3 - it
+        } else it
+    }
+    println(a)
+}
 
-suspend fun main() = runBlocking {
-    val deferred = async {
-        println("started - 1")
-        delay(1000)
-        println("Done - 1")
-        1000
-    }
-    println("job1 status: ${deferred.isActive}")
-    delay(400)
-    deferred.cancelAndJoin()
-    val result = runCatching {
-        deferred.await()
-    }
-    println("job1 status: ${deferred.isActive}")
-    println(result)
+fun main() {
+    test(30)
+    test(31)
+    test(32)
+    test(33)
+    test(34)
+    test(35)
+    test(36)
+    test(37)
+    test(38)
 }
