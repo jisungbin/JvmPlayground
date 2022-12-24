@@ -11,14 +11,16 @@ public class AndroidRunConfiguration extends AndroidRunConfigurationBase impleme
 
     @Nullable
     @Override
-    protected AppLaunchTask getApplicationLaunchTask(@NotNull ApplicationIdProvider applicationIdProvider,
-                                                     @NotNull AndroidFacet facet,
-                                                     @NotNull String contributorsAmStartOptions,
-                                                     boolean waitForDebugger,
-                                                     @NotNull LaunchStatus launchStatus,
-                                                     @NotNull ApkProvider apkProvider,
-                                                     @NotNull ConsolePrinter consolePrinter,
-                                                     @NotNull IDevice device) {
+    protected AppLaunchTask getApplicationLaunchTask(
+        @NotNull ApplicationIdProvider applicationIdProvider,
+        @NotNull AndroidFacet facet,
+        @NotNull String contributorsAmStartOptions,
+        boolean waitForDebugger,
+        @NotNull LaunchStatus launchStatus,
+        @NotNull ApkProvider apkProvider,
+        @NotNull ConsolePrinter consolePrinter,
+        @NotNull IDevice device
+    ) {
         ActivityLaunchOptionState state = getLaunchOptionState(MODE);
         assert state != null;
 
