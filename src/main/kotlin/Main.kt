@@ -1,7 +1,8 @@
-@file:Suppress("ConstPropertyName")
+enum class Test {
+    A, B, C
+}
 
-private const val CertifyingStatementMaxLength = 16
-
-class ViewModel {
-    val certifyingStatementMaxLength = CertifyingStatementMaxLength
+fun main() {
+    val test = enumValues<Test>()
+    test.asList()
 }
