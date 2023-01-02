@@ -1,20 +1,44 @@
-@file:Suppress("OPT_IN_USAGE")
-
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun main() {
-    var number = 0
-    val times = 10
-    runBlocking {
-        launch(Dispatchers.IO.limitedParallelism(1)) {
-            repeat(times) { number++; println("++: $number") }
-            //yield()
+internal class SavedStateFlowHelper<T>(
+    private val savedStateHandle: MutableMap<String, StateFlow<T>>? = null,
+    private val key: String? = null,
+    initialValue: T,
+) {
+    private val savedState: StateFlow<T> = if (savedStateHandle != null && key != null) {
+        savedStateHandle.getOrDefault(key, MutableStateFlow(initialValue))
+    } else {
+        MutableStateFlow(initialValue)
+    }
+
+    internal var value: T
+        get() = savedState.value
+        set(value) {
+            if (savedStateHandle != null && key != null) {
+                savedStateHandle[key] = MutableStateFlow(value)
+            } else {
+                (savedState as MutableStateFlow<T>).value = value
+            }
         }
-        launch(Dispatchers.IO.limitedParallelism(1)) {
-            repeat(times) { number--; println("--: $number") }
+
+    fun asStateFlow() = savedState
+}
+
+fun main() = runBlocking {
+    val counter = SavedStateFlowHelper(initialValue = 1)
+
+    launch {
+        counter.asStateFlow().collect {
+            println(it)
         }
     }
-    println(number) // 0
+
+    repeat(10) {
+        delay(1000)
+        counter.value += 1
+    }
 }
