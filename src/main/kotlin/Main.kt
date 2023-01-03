@@ -15,7 +15,7 @@ internal class SavedStateFlowHelper<T>(
         MutableStateFlow(initialValue)
     }
 
-    internal var value: T
+    var value: T
         get() = savedState.value
         set(value) {
             if (savedStateHandle != null && key != null) {
