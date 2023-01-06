@@ -20,6 +20,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
     implementation("io.ktor:ktor-server-core:2.2.1")
     implementation("io.ktor:ktor-server-netty:2.2.1")
+    implementation("commons-io:commons-io:2.11.0")
     // implementation("org.jetbrains.compose.compiler:compiler-hosted:1.2.0")
 }
 
