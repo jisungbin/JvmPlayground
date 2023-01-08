@@ -15,6 +15,7 @@ repositories {
     }
 }
 
+@Suppress("VulnerableLibrariesLocal")
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
