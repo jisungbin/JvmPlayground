@@ -27,11 +27,12 @@ fun main() {
             val name = line.split(", ")[1].split(" :")[0]
             val message = line.split(" : ")[1]
             val date = dateFormatter.parse(dateString)
-            if (leaveCheckResult[name] == null) {
-                leaveCheckResult[name] =
-                    targrtWholeText.contains("${name}님을 내보냈습니다") || targrtWholeText.contains("${name}님이 나갔습니다")
-            }
-            if (!leaveCheckResult[name]!!) {
+            // if (leaveCheckResult[name] == null) {
+            //     leaveCheckResult[name] =
+            //         targrtWholeText.contains("${name}님을 내보냈습니다") || targrtWholeText.contains("${name}님이 나갔습니다")
+            // }
+            @Suppress("ConstantConditionIf")
+            if (true) {
                 if (chats[name] == null) {
                     chats[name] = listOf(Pair(date, message))
                 } else {
