@@ -7,6 +7,8 @@ import java.util.Locale
 
 private const val Debug = false
 
+val dateFormatter = SimpleDateFormat("yyyy. M. dd. aa h:mm", Locale.KOREA)
+
 fun main() {
     val targetFile = File("/Users/jisungbin/Downloads/chat/katalk.txt")
     val targetLines = targetFile.readLines()
@@ -16,9 +18,8 @@ fun main() {
     val errorFile = File("/Users/jisungbin/Downloads/chat/error.txt")
 
     val chats = mutableMapOf<String, List<Pair<Date, String>>>()
+    val errors = mutableListOf<String>()
     val leaveCheckResult = mutableMapOf<String, Boolean>()
-
-    val dateFormatter = SimpleDateFormat("YYYY. M. dd. aa h:mm", Locale.KOREA)
 
     targetLines.forEach { line ->
         try {
@@ -41,28 +42,25 @@ fun main() {
             if (!errorFile.exists()) {
                 errorFile.createNewFile()
             }
-            errorFile.appendText(
+            errors.add(
                 """
-                    |
-                    |
                     |error: ${error.message}
                     |line: $line
                 """.trimMargin()
             )
         }
     }
+    errorFile.writeText(errors.joinToString("\n\n"))
     if (!Debug) {
         val result = buildList {
             chats.forEach { (name, messages) ->
                 add(
                     """
-                name: $name
-                last message: ${messages.last().second}
-                last time: ${messages.last().first.let { dateFormatter.format(it) }}
-                message count: ${messages.size}
-                """.trimIndent()
-                            to
-                            messages.last().first
+                    name: $name
+                    last message: ${messages.last().second}
+                    last time: ${messages.last().first.let { dateFormatter.format(it) }}
+                    message count: ${messages.size}
+                    """.trimIndent() to messages.last().first
                 )
             }
         }

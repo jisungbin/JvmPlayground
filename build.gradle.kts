@@ -21,6 +21,8 @@ dependencies {
     implementation("io.ktor:ktor-server-core:2.2.1")
     implementation("io.ktor:ktor-server-netty:2.2.1")
     implementation("commons-io:commons-io:2.11.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
+    testImplementation("io.strikt:strikt-core:0.34.1")
     // implementation("org.jetbrains.compose.compiler:compiler-hosted:1.2.0")
 }
 
