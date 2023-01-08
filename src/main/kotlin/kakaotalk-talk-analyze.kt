@@ -14,10 +14,14 @@ fun main() {
     val targetLines = targetFile.readLines()
     val targrtWholeText = targetFile.readText()
 
-    val reportFile = File("/Users/jisungbin/Downloads/chat/report.txt")
-    val errorFile = File("/Users/jisungbin/Downloads/chat/error.txt")
+    val reportFile = File("/Users/jisungbin/Downloads/chat/report.txt").also {
+        if (it.exists()) it.delete()
+    }
+    val errorFile = File("/Users/jisungbin/Downloads/chat/error.txt").also {
+        if (it.exists()) it.delete()
+    }
 
-    val chats = mutableMapOf<String, List<Pair<Date, String>>>()
+    val chats = mutableMapOf<String, MutableList<Pair<Date, String>>>()
     val errors = mutableListOf<String>()
     val leaveCheckResult = mutableMapOf<String, Boolean>()
 
@@ -33,10 +37,9 @@ fun main() {
             // }
             @Suppress("ConstantConditionIf")
             if (true) {
-                if (chats[name] == null) {
-                    chats[name] = listOf(Pair(date, message))
-                } else {
-                    chats[name] = chats[name]!! + Pair(date, message)
+                chats.compute(name) { _, chats ->
+                    val value = date to message
+                    chats?.apply { add(value) } ?: mutableListOf(value)
                 }
             }
         } catch (error: Exception) {
