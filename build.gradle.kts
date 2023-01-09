@@ -15,6 +15,26 @@ repositories {
     }
 }
 
+//junit5
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+dependencies {
+    // (Required) Writing and executing Unit Tests on the JUnit Platform
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+
+    // (Optional) If you need "Parameterized Tests"
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+
+    // (Optional) If you also have JUnit 4-based tests
+    testImplementation("junit:junit:4.13.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
+}
+//truth
+dependencies {
+    testImplementation("com.google.truth:truth:1.1.3")
+}
 @Suppress("VulnerableLibrariesLocal")
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
