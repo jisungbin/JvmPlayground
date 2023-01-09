@@ -1,78 +1,41 @@
-@file:Suppress("ConstPropertyName")
-
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
-private const val Debug = false
+private const val DEBUG = true
 
-val dateFormatter = SimpleDateFormat("yyyy. M. dd. aa h:mm", Locale.KOREA)
+val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+data class Chat(val date: Long, val name: String, val message: String)
 
 fun main() {
-    val targetFile = File("/Users/jisungbin/Downloads/chat/katalk.txt")
-    val targetLines = targetFile.readLines()
-    val targrtWholeText = targetFile.readText()
+    val targetFile = File("release/KakaoTalk_Chat.csv")
+    val reportFile = File("release/report.txt").also { it.delete() }
+    val errorFile = File("release/error.txt").also { it.delete() }
+    val filterMessages = listOf("님을 내보냈습니다", "님이 나갔습니다", "님이 들어왔습니다")
 
-    val reportFile = File("/Users/jisungbin/Downloads/chat/report.txt").also {
-        if (it.exists()) it.delete()
-    }
-    val errorFile = File("/Users/jisungbin/Downloads/chat/error.txt").also {
-        if (it.exists()) it.delete()
-    }
-
-    val chats = mutableMapOf<String, MutableList<Pair<Date, String>>>()
-    val errors = mutableListOf<String>()
-    val leaveCheckResult = mutableMapOf<String, Boolean>()
-
-    targetLines.forEach { line ->
-        try {
-            val dateString = line.split(",")[0]
-            val name = line.split(", ")[1].split(" :")[0]
-            val message = line.split(" : ")[1]
-            val date = dateFormatter.parse(dateString)
-            // if (leaveCheckResult[name] == null) {
-            //     leaveCheckResult[name] =
-            //         targrtWholeText.contains("${name}님을 내보냈습니다") || targrtWholeText.contains("${name}님이 나갔습니다")
-            // }
-            @Suppress("ConstantConditionIf")
-            if (true) {
-                chats.compute(name) { _, chats ->
-                    val value = date to message
-                    chats?.apply { add(value) } ?: mutableListOf(value)
+    targetFile.readText()
+        .split("\n(?=\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})".toRegex())
+        .asSequence()
+        .map { it.split(",", limit = 3) }
+        .mapNotNull { chat ->
+            runCatching {
+                Chat(
+                    date = dateFormatter.parse(chat.getOrNull(0)).time,
+                    name = chat.getOrNull(1)?.trim('"').orEmpty(),
+                    message = chat.getOrNull(2).orEmpty(),
+                ).let { chat ->
+                    chat.takeIf { !filterMessages.any { chat.message.contains(it) } }
                 }
-            }
-        } catch (error: Exception) {
-            if (!errorFile.exists()) {
-                errorFile.createNewFile()
-            }
-            errors.add(
-                """
-                    |error: ${error.message}
-                    |line: $line
-                """.trimMargin()
-            )
-        }
-    }
-    errorFile.writeText(errors.joinToString("\n\n"))
-    if (!Debug) {
-        val result = buildList {
-            chats.forEach { (name, messages) ->
-                add(
-                    """
-                    name: $name
-                    last message: ${messages.last().second}
-                    last time: ${messages.last().first.let { dateFormatter.format(it) }}
-                    message count: ${messages.size}
-                    """.trimIndent() to messages.last().first
-                )
+            }.getOrElse { exception ->
+                if (DEBUG) errorFile.appendText("[$chat] $exception\n")
+                null
             }
         }
-        result.sortedBy { it.second }.let { report ->
-            if (!reportFile.exists()) {
-                reportFile.createNewFile()
-            }
-            reportFile.writeText(report.joinToString("\n\n") { it.first })
-        }
-    }
+        .groupBy { it.name }
+        .mapNotNull { (_, chats) -> chats.maxByOrNull { it.date } }
+        .sortedByDescending { it.date }
+        .mapIndexed { index, chat -> "${index + 1}:${dateFormatter.format(Date(chat.date))}:${chat.name}" }
+        .onEach { println(it) }
+        .also { reportFile.writeText(it.joinToString("\n")) }
 }

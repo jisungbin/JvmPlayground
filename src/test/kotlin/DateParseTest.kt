@@ -10,14 +10,15 @@ import util.buildDate
 class DateParseTest {
     @Test
     fun `오전 시간`() {
-        val dateString = "2022. 9. 16. 오전 9:49"
+        val dateString = "2021-12-25 18:52:27"
         val actual = dateFormatter.parse(dateString)
         val expected = buildDate(
-            year = 2022,
-            month = 8,
-            day = 16,
-            hour = 9,
-            minute = 49,
+            year = 2021,
+            month = 11,
+            day = 25,
+            hour = 18,
+            minute = 52,
+            second = 27,
         )
 
         expectThat(actual).withNotNull {
@@ -35,14 +36,15 @@ class DateParseTest {
 
     @Test
     fun `오후 시간`() {
-        val dateString = "2022. 12. 16. 오후 9:49"
+        val dateString = "2021-12-25 8:52:27"
         val actual = dateFormatter.parse(dateString)
         val expect = buildDate(
-            year = 2022,
+            year = 2021,
             month = 11,
-            day = 16,
-            hour = 21,
-            minute = 49,
+            day = 25,
+            hour = 8,
+            minute = 52,
+            second = 27,
         )
 
         expectThat(actual).withNotNull {
