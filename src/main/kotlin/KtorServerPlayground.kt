@@ -1,4 +1,4 @@
-@file:Suppress("ConstPropertyName")
+@file:Suppress("LocalVariableName")
 
 import io.ktor.http.content.PartData
 import io.ktor.http.content.forEachPart
@@ -16,18 +16,18 @@ import java.io.File
 
 fun main() {
     embeddedServer(
-        factory = Netty,
-        port = 8080,
-        module = Application::modules,
+            factory = Netty,
+            port = 8080,
+            module = Application::modules,
     ).start(wait = true)
 }
 
-private fun Application.modules () {
-    pingpongModule()
+private fun Application.modules() {
+    pingPongModule()
     filePostingModule()
 }
 
-private fun Application.pingpongModule() {
+private fun Application.pingPongModule() {
     routing {
         get("/") {
             call.respondText("working!")
@@ -49,11 +49,13 @@ private fun Application.filePostingModule() {
                     is PartData.FormItem -> {
                         fileDescription = part.value
                     }
+
                     is PartData.FileItem -> {
                         fileName = part.originalFileName as String
                         val fileBytes = part.streamProvider().readBytes()
                         File("$FileDownloadPath/$fileName").writeBytes(fileBytes)
                     }
+
                     else -> {}
                 }
                 part.dispose()
