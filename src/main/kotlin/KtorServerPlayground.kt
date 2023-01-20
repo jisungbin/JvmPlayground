@@ -16,9 +16,9 @@ import java.io.File
 
 fun main() {
     embeddedServer(
-            factory = Netty,
-            port = 8080,
-            module = Application::modules,
+        factory = Netty,
+        port = 8080,
+        module = Application::modules,
     ).start(wait = true)
 }
 
