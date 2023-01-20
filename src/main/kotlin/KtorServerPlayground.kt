@@ -49,13 +49,11 @@ private fun Application.filePostingModule() {
                     is PartData.FormItem -> {
                         fileDescription = part.value
                     }
-
                     is PartData.FileItem -> {
                         fileName = part.originalFileName as String
                         val fileBytes = part.streamProvider().readBytes()
                         File("$FileDownloadPath/$fileName").writeBytes(fileBytes)
                     }
-
                     else -> {}
                 }
                 part.dispose()
