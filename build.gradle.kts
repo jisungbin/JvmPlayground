@@ -45,6 +45,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
     testImplementation("io.strikt:strikt-core:0.34.1")
     testImplementation("com.google.truth:truth:1.1.3")
-    // implementation("org.jetbrains.compose.compiler:compiler-hosted:1.2.0")
+
+    implementation("androidx.compose.runtime:runtime:1.3.3")
 }
 
