@@ -1,5 +1,6 @@
+import kotlin.properties.Delegates
+
 fun main() {
-    val list = listOf(1, 2, 3, 4, 5)
-    val filter = listOf(1, 2, 3, 4)
-    println(list.dropWhile(filter::contains))
+    lateinit var one: String
+    var two by Delegates.notNull<String>()
 }
