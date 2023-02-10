@@ -1,7 +1,9 @@
+import kotlinx.benchmark.gradle.JvmBenchmarkTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.20"
+    kotlin("jvm") version "1.8.10"
+    id("org.jetbrains.kotlinx.benchmark") version ("0.4.7")
     application
 }
 
@@ -20,15 +22,30 @@ application {
     mainClass.set("MainKt")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+benchmark {
+    configurations {
+        named("main") {
+            iterationTime = 5
+            mode = "avgt" // measures time per benchmark function invocation
+        }
+    }
+    targets {
+        register("main") {
+            this as JvmBenchmarkTarget
+            jmhVersion = "1.21"
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
     }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 @Suppress("VulnerableLibrariesLocal")
@@ -40,6 +57,7 @@ dependencies {
     implementation("commons-io:commons-io:2.11.0")
     implementation("org.slf4j:slf4j-api:2.0.6")
     implementation("org.slf4j:slf4j-simple:2.0.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.4")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")

@@ -1,6 +1,4 @@
-import kotlin.properties.Delegates
-
 fun main() {
-    lateinit var one: String
-    var two by Delegates.notNull<String>()
+    java.lang.String.valueOf(0L)
+    0L.toString()
 }
