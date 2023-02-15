@@ -1,4 +1,5 @@
-fun `am_I_awesome?`() {}
-fun test(){
-    ::`am_I_awesome?`
+import kotlin.random.Random
+
+fun main() {
+    println(Integer.toHexString(Random.nextInt()))
 }
