@@ -1,8 +1,5 @@
 fun main() {
-    println(getGithub())
+    mutableSetOf(1)
+    mutableListOf(1)
+    mutableMapOf(1 to "A")
 }
-
-/**
- * Github 에서 값 조회
- */
-private fun getGithub() = "Github"
