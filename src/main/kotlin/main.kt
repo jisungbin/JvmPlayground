@@ -1,8 +1,18 @@
-internal val aideComponents: Map<String, List<String>> = run {
-    val aide = mutableMapOf<String, List<String>>()
-    aide["QuackAnimatedContent"] = listOf("QuackAnimatedContent")
-    aide["QuackAnimatedVisibility"] = listOf("QuackAnimatedVisibility")
-    aide["text"] = listOf("QuackText")
-    aide["theme"] = listOf("QuackTheme")
-    aide
+fun main() {
+    test(
+        modifier = Modifier
+            .chain()
+            .chain2()
+            .chain3(),
+    )
 }
+
+interface Modifier {
+    companion object : Modifier
+}
+
+fun Modifier.chain() = this
+fun Modifier.chain2() = this
+fun Modifier.chain3() = this
+
+fun test(modifier: Modifier) {}
