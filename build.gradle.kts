@@ -58,6 +58,9 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.6")
     implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.4")
     implementation("com.squareup:kotlinpoet:1.12.0")
+    implementation("org.jetbrains.dokka:dokka-base:1.8.10")
+    implementation("org.jetbrains.dokka:dokka-core:1.8.10")
+    implementation("org.jetbrains.kotlin:kotlin-compiler:1.8.10")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
