@@ -1,3 +1,7 @@
-fun main() {
-    // 포기
-}
+var test: Int = 0
+    get() {
+       return field
+    }
+    set(value) {
+        field = value
+    }
