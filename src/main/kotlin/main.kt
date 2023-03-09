@@ -1,7 +1,6 @@
-var test: Int = 0
-    get() {
-       return field
+fun main() {
+    val myObject = object {
+        val myProperty = "Hello, world!"
     }
-    set(value) {
-        field = value
-    }
+    println(myObject.myProperty)
+}
