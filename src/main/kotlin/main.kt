@@ -1,6 +1,5 @@
+import androidx.compose.compiler.plugins.kotlin.lower.IrSourcePrinterVisitor
+
 fun main() {
-    val myObject = object {
-        val myProperty = "Hello, world!"
-    }
-    println(myObject.myProperty)
+    IrSourcePrinterVisitor(System.out)
 }
