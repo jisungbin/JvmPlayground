@@ -2,6 +2,8 @@ interface Hi
 
 class HiImpl : Hi
 
+fun sa() {}
+
 class Test {
     var test: Int? = 1
     public fun AAAA(
