@@ -33,5 +33,6 @@ fun main() {
         java.lang.Object::class.java,
     ).invoke(a, a, null, null, null, Int.MAX_VALUE, null)
 
-    println(b.getMethod("getTest").invoke(a))
+    // println(b.getMethod("getTest").invoke(a))
+    println("AAA".toMutableList().apply { addAll(1, "BBB".toList()) }.joinToString(""))
 }
