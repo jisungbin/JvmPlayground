@@ -13,9 +13,6 @@ version = "1.0.0"
 repositories {
     mavenCentral()
     google()
-    maven {
-        setUrl("https://jitpack.io")
-    }
 }
 
 application {
@@ -47,24 +44,25 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-@Suppress("VulnerableLibrariesLocal")
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
     implementation("io.ktor:ktor-server-core:2.2.1")
+    @Suppress("VulnerableLibrariesLocal")
     implementation("io.ktor:ktor-server-netty:2.2.1")
     implementation("commons-io:commons-io:2.11.0")
     implementation("org.slf4j:slf4j-api:2.0.6")
     implementation("org.slf4j:slf4j-simple:2.0.6")
-    implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.6")
     implementation("com.squareup:kotlinpoet:1.12.0")
     implementation("org.jetbrains.dokka:dokka-base:1.8.10")
     implementation("org.jetbrains.dokka:dokka-core:1.8.10")
     implementation("org.jetbrains.kotlin:kotlin-compiler:1.8.10")
+    implementation("androidx.compose.ui:ui-util:1.4.0")
     implementation("org.jetbrains.compose.compiler:compiler-hosted:1.4.2")
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
     testImplementation("io.strikt:strikt-core:0.34.1")
     testImplementation("com.google.truth:truth:1.1.3")
