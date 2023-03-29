@@ -1,4 +1,7 @@
-@RequiresOptIn
-@Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.BINARY)
-annotation class SugarCompilerApi
+fun interface Runnable {
+    fun run()
+}
+
+fun main() {
+    val runnable = Runnable { println("HI") }
+}

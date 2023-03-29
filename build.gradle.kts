@@ -58,7 +58,6 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-base:1.8.10")
     implementation("org.jetbrains.dokka:dokka-core:1.8.10")
     implementation("org.jetbrains.kotlin:kotlin-compiler:1.8.10")
-    implementation("androidx.compose.ui:ui-util:1.4.0")
     implementation("org.jetbrains.compose.compiler:compiler-hosted:1.4.2")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
