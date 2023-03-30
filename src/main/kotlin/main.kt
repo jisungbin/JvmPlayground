@@ -1,7 +1,10 @@
-fun interface Runnable {
-    fun run()
+fun interface A {
+    fun plus(num: Int, num2: Int)
 }
 
 fun main() {
-    val runnable = Runnable { println("HI") }
+    val a = Plus<Int> { num, num2 ->
+        println(num + num2)
+    }
+    a.plus(1, 1)
 }
