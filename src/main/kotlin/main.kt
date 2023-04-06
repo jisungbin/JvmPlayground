@@ -11,7 +11,7 @@ class StringPrinter {
 }
 
 class LocalStringPrinter {
-    private var value = ThreadLocal<String>()
+    private val value = ThreadLocal<String>()
 
     fun delayedPrint(name: String, delay: Int = 1000) {
         value.set(name)
@@ -23,18 +23,13 @@ class LocalStringPrinter {
 fun main() {
     val stringPrinter = StringPrinter()
     thread { stringPrinter.delayedPrint("threadA") }
-    sleep(100)
     thread { stringPrinter.delayedPrint("threadB") }
 
-    sleep(1500)
     println()
 
     val localStringPrinter = LocalStringPrinter()
     thread { localStringPrinter.delayedPrint("localThreadA") }
-    sleep(100)
     thread { localStringPrinter.delayedPrint("localThreadB") }
-
-    sleep(1500)
 }
 
 private fun sleep(millis: Int) {
