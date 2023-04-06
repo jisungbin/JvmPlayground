@@ -1,3 +1,5 @@
+import kotlin.concurrent.thread
+
 class StringPrinter {
     private var value: String? = null
 
@@ -18,31 +20,24 @@ class LocalStringPrinter {
     }
 }
 
-
-private val stringPrinter = StringPrinter()
-private val localStringPrinter = LocalStringPrinter()
-
 fun main() {
-    val threadA = Thread { stringPrinter.delayedPrint("threadA") }
-    val threadB = Thread { stringPrinter.delayedPrint("threadB") }
-    threadA.start()
+    val stringPrinter = StringPrinter()
+    thread { stringPrinter.delayedPrint("threadA") }
     sleep(100)
-    threadB.start()
+    thread { stringPrinter.delayedPrint("threadB") }
 
     sleep(1500)
     println()
 
-    val localThreadA = Thread { localStringPrinter.delayedPrint("localThreadA") }
-    val localThreadB = Thread { localStringPrinter.delayedPrint("localThreadB") }
-    localThreadA.start()
+    val localStringPrinter = LocalStringPrinter()
+    thread { localStringPrinter.delayedPrint("localThreadA") }
     sleep(100)
-    localThreadB.start()
+    thread { localStringPrinter.delayedPrint("localThreadB") }
 
     sleep(1500)
 }
 
-@Suppress("NOTHING_TO_INLINE")
-private inline fun sleep(millis: Int) {
+private fun sleep(millis: Int) {
     try {
         Thread.sleep(millis.toLong())
     } catch (e: InterruptedException) {
