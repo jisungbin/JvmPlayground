@@ -5,8 +5,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.8.10"
-    id("org.jetbrains.kotlinx.benchmark") version ("0.4.7")
+    id("org.jetbrains.kotlinx.benchmark") version "0.4.7"
+    id("land.sungbin.kotlin.dataclass.nocopy.plugin") version "1.0.3"
     application
+}
+
+nocopy {
+    verbose.set(true)
 }
 
 repositories {
