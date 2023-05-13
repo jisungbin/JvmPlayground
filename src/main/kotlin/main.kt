@@ -11,6 +11,11 @@ fun rawTest2(hi: (String) -> Int, bye: Function2<Unit, Int, String>) {
     test(hi = hi, bye = bye)
 }
 
+fun QuackText(
+    function: (unit: Unit, unit2: Unit, unit3: () -> Unit) -> Unit,
+) {
+}
+
 fun main() {
     rawTest(
         hi = { v ->
