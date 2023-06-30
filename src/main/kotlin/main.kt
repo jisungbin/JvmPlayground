@@ -1,9 +1,10 @@
-fun test(value: (() -> Unit) -> Unit) {
-  value {
-    print(1)
-  }
-}
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-fun main() {
-  test { it() }
+fun main() = runBlocking {
+    println(Thread.currentThread().name)
+    withContext(Dispatchers.IO) {
+        println(Thread.currentThread().name)
+    }
 }
