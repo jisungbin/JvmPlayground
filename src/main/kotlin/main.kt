@@ -1,10 +1,7 @@
-import org.jetbrains.dokka.model.doc.B
+@JvmInline
+value class QuackPluginLocal(public val value: Any?)
 
-interface A {
-    val a: Int
-    var aa: Int
-}
-@Suppress("VAR_OVERRIDDEN_BY_VAL_BY_DELEGATION")
-class C(a: A) : A by a/*, B*/ {
-    override val a = 2
+fun main() {
+    println(QuackPluginLocal(1) == QuackPluginLocal(2))
+    println(QuackPluginLocal(1) == QuackPluginLocal(1))
 }
