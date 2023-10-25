@@ -1,6 +1,10 @@
-annotation class Test
-annotation class Test2(val value: String)
+val list = listOf(3, 1, 4, 2, 5, 6, 2)
+const val targetIndex = 2 // 4
 
-@[Test Test2("a") Deprecated("")]
-fun test() {
+fun main() {
+    list
+        .withIndex()
+        .sortedByDescending { (index, _) -> index == targetIndex }
+        .map(IndexedValue<Int>::value)
+        .let(::println)
 }
