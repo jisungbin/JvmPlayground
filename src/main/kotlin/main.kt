@@ -1,4 +1,6 @@
 fun main() {
-  val list = listOf("b", "c", "a")
-  println(list.sortedBy { it })
+  val buffer = StringBuilder()
+  buffer.append("Hello, World!")
+  buffer.insert(0, "SAY: ")
+  println(buffer.toString())
 }
