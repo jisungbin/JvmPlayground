@@ -14,4 +14,5 @@ fun main() {
   lamda {
     a = 1
   }
+  println(a)
 }
