@@ -1,5 +1,17 @@
+@file:OptIn(ExperimentalContracts::class)
+
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
+
+fun lamda(l: () -> Unit) {
+  contract { callsInPlace(l, InvocationKind.EXACTLY_ONCE) }
+  l()
+}
+
 fun main() {
-  val function: () -> Unit = {}
-  val a = function as Function1<Int, Unit>
-  println(a.invoke(1))
+  val a: Int
+  lamda {
+    a = 1
+  }
 }
