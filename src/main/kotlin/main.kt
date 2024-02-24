@@ -1,3 +1,4 @@
+const val z = 0
 const val a = 1 shl 0
 const val b = 1 shl 1
 const val c = 1 shl 2
@@ -7,7 +8,9 @@ const val e = 1 shl 4
 fun main() {
   val abc = a or b or c
 
-  println("""
+  println(
+    """
+    $z (${Integer.toBinaryString(z)})
     $a (${Integer.toBinaryString(a)})
     $b (${Integer.toBinaryString(b)})
     $c (${Integer.toBinaryString(c)})
@@ -15,11 +18,13 @@ fun main() {
     $e (${Integer.toBinaryString(e)})
     
     $abc (${Integer.toBinaryString(abc)})
-    
+   
+    ${abc and z}
     ${abc and a}
     ${abc and b}
     ${abc and c}
     ${abc and d}
     ${abc and e}
-  """.trimIndent())
+  """.trimIndent()
+  )
 }
