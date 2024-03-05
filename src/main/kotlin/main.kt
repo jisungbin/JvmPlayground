@@ -1,7 +1,8 @@
-internal fun interface StableColorProducer {
-  operator fun invoke(): Int
-}
-
 fun main() {
-  println(StableColorProducer { 1 }())
+  println(mutableMapOf(1 to 1).hashCode())
+  println(mutableMapOf(1 to 1).hashCode())
+  println(mutableMapOf(1 to 2).hashCode())
+  println(mutableMapOf(1 to 2).hashCode())
+  println(mutableMapOf(1 to 1, 1 to 2).hashCode())
+  println(mutableMapOf(1 to 1, 1 to 2).hashCode())
 }
