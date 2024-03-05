@@ -1,9 +1,7 @@
-@JvmInline
-value class W(val v: Any)
+internal fun interface StableColorProducer {
+  operator fun invoke(): Int
+}
 
 fun main() {
-  println(W(1).hashCode())
-  println(W(1).hashCode())
-  println(W(124422).hashCode())
-  println(W(124422).hashCode())
+  println(StableColorProducer { 1 }())
 }
