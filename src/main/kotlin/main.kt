@@ -1,8 +1,14 @@
-fun main() {
-  println(mutableMapOf(1 to 1).hashCode())
-  println(mutableMapOf(1 to 1).hashCode())
-  println(mutableMapOf(1 to 2).hashCode())
-  println(mutableMapOf(1 to 2).hashCode())
-  println(mutableMapOf(1 to 1, 1 to 2).hashCode())
-  println(mutableMapOf(1 to 1, 1 to 2).hashCode())
+fun main() = runBlocking {
+  val channel = Channel<Unit>()
+
+  launch {
+    channel.consumeEach {
+      println("Get: $it")
+    }
+  }
+
+  repeat(5) {
+    delay(300)
+    channel.send(Uni)
+  }
 }
