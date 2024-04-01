@@ -1,14 +1,5 @@
-fun main() = runBlocking {
-  val channel = Channel<Unit>()
+import java.net.URL
 
-  launch {
-    channel.consumeEach {
-      println("Get: $it")
-    }
-  }
-
-  repeat(5) {
-    delay(300)
-    channel.send(Uni)
-  }
+fun main() {
+  println(URL("http://www.example.com").toString())
 }
