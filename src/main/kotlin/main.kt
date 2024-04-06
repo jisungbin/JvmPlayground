@@ -38,7 +38,7 @@ fun main() {
     override fun toString(): String = "LayoutNodeConsumerNode2"
   }
   val contentUpdateNode = object : Node {
-    override val kindSet: Int = Nodes.ContentUpdater or Nodes.ContentReader
+    override val kindSet: Int = Nodes.ContentUpdater.mask
     override fun toString(): String = "ContentUpdateNode"
   }
   val contentReaderNode = object : Node {
@@ -46,6 +46,9 @@ fun main() {
     override fun toString(): String = "ContentReaderNode"
   }
   listOf(layoutNodeProviderNode, layoutNodeConsumerNode, layoutNodeConsumerNode2, contentUpdateNode, contentReaderNode)
+    .shuffled()
+    .onEach { println("Shuffled: $it") }
+    .also { println("\n") }
     .sortedWith(Nodes.MapNodeComparator)
-    .forEach { println(it) }
+    .forEach { println("Sorted: $it") }
 }
