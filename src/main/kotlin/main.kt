@@ -1,7 +1,17 @@
-@file:Suppress("KotlinConstantConditions")
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 
 fun main() {
-  val a = Any()
-  if (a is String) println(a.length)
-  println((a as? Int)?.plus(1))
+  val result: Any?
+  runBlocking {
+    result = withTimeoutOrNull(3.seconds) {
+      repeat(1000) { i ->
+        println("I'm sleeping $i ...")
+        delay(500)
+      }
+    }
+    println(result)
+  }
 }
