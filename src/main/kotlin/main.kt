@@ -1,7 +1,8 @@
-@file:Suppress("KotlinConstantConditions")
-
 fun main() {
-  val a = Any()
-  if (a is String) println(a.length)
-  println((a as? Int)?.plus(1))
+  println((0b1 shl 1) or (0b1 shl 2))
+  println(((0b1 shl 1) or (0b1 shl 2)).toString(2))
+  println((0b1 shl 0) or (0b1 shl 1) or (0b1 shl 2))
+  println(((0b1 shl 0) or (0b1 shl 1) or (0b1 shl 2)).toString(2))
+  println((0b1 shl 0) and ((0b1 shl 1) or (0b1 shl 2)))
+  println(((0b1 shl 0) and ((0b1 shl 1) or (0b1 shl 2))).toString(2))
 }
