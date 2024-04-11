@@ -1,10 +1,18 @@
-fun main() {
-  val m = MyInterface::class.java.getMethod("method", String::class.java)
-  val p = m.parameters[0]
-  println(p.isNamePresent)
-  println(p.name)
+interface NaverMap {
+  fun data(data: Any)
 }
 
-interface MyInterface {
-  fun method(str: String?): String?
+class OverlayDelegator {
+  fun NaverMap.action(data: Any) {
+    data(data)
+  }
+}
+
+class OverlayContributer {
+  private val data = Any()
+  private val delegator = OverlayDelegator()
+
+  fun Any.contribute() {
+    if (this is NaverMap) with(delegator) { action(data) }
+  }
 }
