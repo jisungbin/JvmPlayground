@@ -41,7 +41,7 @@ fun main() {
       println(param.toStringWithSimpleNames())
 
       when (descriptor) {
-        is BaseTypeSignature -> println(descriptor.typed())
+        is BaseTypeSignature -> println(descriptor.typed().kotlin())
         is ArrayTypeSignature -> println(
           when (val componentType = descriptor.loadElementClass()) {
             Byte::class.javaPrimitiveType!! -> BYTE_ARRAY
@@ -51,7 +51,7 @@ fun main() {
             Long::class.javaPrimitiveType!! -> LONG_ARRAY
             Float::class.javaPrimitiveType!! -> FLOAT_ARRAY
             Double::class.javaPrimitiveType!! -> DOUBLE_ARRAY
-            else -> ARRAY.parameterizedBy(componentType.asClassName())
+            else -> ARRAY.parameterizedBy(componentType.asClassName().kotlin())
           }
         )
         is ClassRefTypeSignature -> println(descriptor.foldInnerTypes())
@@ -76,7 +76,7 @@ private fun BaseTypeSignature.typed() = when (val type = type) {
 }
 
 private fun ClassRefTypeSignature.foldInnerTypes(): TypeName {
-  val parent = loadClass().asClassName()
+  val parent = loadClass().asClassName().kotlin()
   if (typeArguments.isNotEmpty()) {
     val trailing = typeArguments.map { argu -> (argu.typeSignature as ClassRefTypeSignature).foldInnerTypes() }
     return parent.parameterizedBy(trailing)
