@@ -1,8 +1,19 @@
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.buildCodeBlock
+import kotlin.concurrent.thread
+
+val lock = Any()
+var doneTime: Long? = null
+
+fun lockAction() {
+  synchronized(lock) {
+    if (doneTime != null) return println("Done at $doneTime")
+    Thread.sleep(3000)
+    doneTime = System.currentTimeMillis()
+    println("DONE! at $doneTime")
+  }
+}
 
 fun main() {
-  val function = FunSpec.builder("name").addStatement("return 1").build()
-  val codeBlock = buildCodeBlock { add("%L", function) }
-  println(codeBlock)
+  repeat(10) {
+    thread { lockAction() }
+  }
 }
