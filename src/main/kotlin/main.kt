@@ -1,27 +1,17 @@
-import okio.Buffer
-import okio.ByteString.Companion.encodeUtf8
+import okio.FileSystem
+import okio.Path.Companion.toPath
+import okio.buffer
 
 fun main() {
-  val buffer = Buffer()
-  buffer.writeUtf8("""
-    |object Numbers {
-    |  const val ONE = 1
-    |  const val TWO = 2
-    |}
-  """.trimMargin())
-
-  println(buffer.peek().readUtf8())
-  println()
-
-  val oneOffset = buffer.indexOfElement("Numbers".encodeUtf8())
-  buffer.skip(oneOffset)
-
-  println("oneOffset is $oneOffset")
-  println(buffer.peek().readUtf8())
-  println()
-
-  val newOne = "ONE = 1_000".encodeUtf8()
-  buffer.write(newOne)
-
-  println(buffer.readUtf8())
+  FileSystem.SYSTEM
+    .openReadWrite("/Users/jisungbin/IdeaProjects/JvmPlayground/src/main/kotlin/TEST.txt".toPath(), mustExist = true)
+    .use { fs ->
+      val current = fs.source().buffer().use { it.readUtf8LineStrict() }
+      fs.resize(0L)
+      fs.sink().buffer().use { sink ->
+        sink.writeUtf8(current)
+        sink.writeUtf8("\n")
+        sink.writeUtf8("Bye, World!")
+      }
+    }
 }
