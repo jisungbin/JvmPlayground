@@ -1,5 +1,5 @@
 plugins {
-  kotlin("jvm") version "1.9.23"
+  kotlin("jvm") version "2.0.0"
   application
 }
 
@@ -14,7 +14,6 @@ application {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.23")
-  implementation("com.squareup.okio:okio:3.9.0")
+  implementation(kotlin("reflect"))
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
 }

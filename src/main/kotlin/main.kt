@@ -1,8 +1,10 @@
-fun main() {
-  val url = "http://localhost:50025/?a=b&snack=milk-classic"
-  val content = "<-- POST 200 $url (2ms)"
-  val regex = Regex("""<-- POST 200 ${url.regexSafe().also(::println)} \(\d+ms\)""")
-  println(content.matches(regex))
-}
+import java.io.File
 
-private fun String.regexSafe() = replace(Regex("[.^$|()\\[\\]{}*+?\\\\]")) { "\\${it.value}" }
+fun main() {
+  val target = File("/Users/jisungbin/AndroidStudioProjects/ComposeInvestigator")
+  target.walkBottomUp().forEach { file ->
+    if (file.name.contains("track")) {
+      println(file.absolutePath)
+    }
+  }
+}
