@@ -1,11 +1,6 @@
-enum class MarkdownToken {
-  Text,
-  Number;
-
-  override fun toString(): String = "${javaClass.name}.${name}"
-}
-
 fun main() {
-  println(MarkdownToken.Text)
-  println(MarkdownToken.Number)
+  repeat(10) {
+    if (it == 5) throw RuntimeException("it is 5")
+    println(it)
+  }
 }
