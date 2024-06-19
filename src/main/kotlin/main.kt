@@ -1,6 +1,11 @@
+enum class MarkdownToken {
+  Text,
+  Number;
+
+  override fun toString(): String = "${javaClass.name}.${name}"
+}
+
 fun main() {
-  repeat(10) { println(it) }
-  for (i in 0..10) {
-    println(i)
-  }
+  println(MarkdownToken.Text)
+  println(MarkdownToken.Number)
 }
