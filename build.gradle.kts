@@ -10,8 +10,6 @@ repositories {
 
 dependencies {
   implementation(kotlin("reflect"))
-  implementation(kotlin("stdlib"))
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
-  implementation("com.squareup.okio:okio:3.9.0")
-  implementation("org.jsoup:jsoup:1.18.1")
+  implementation("com.caoccao.javet:javet-macos:3.1.4")
 }
