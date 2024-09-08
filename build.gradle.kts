@@ -1,5 +1,5 @@
 plugins {
-  kotlin("jvm") version "2.0.0"
+  kotlin("jvm") version "2.0.20"
 }
 
 repositories {
@@ -10,6 +10,6 @@ repositories {
 
 dependencies {
   implementation(kotlin("reflect"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
-  implementation("com.caoccao.javet:javet-macos:3.1.4")
+//  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
+//  implementation("com.caoccao.javet:javet-macos:3.1.4")
 }
