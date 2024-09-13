@@ -10,6 +10,6 @@ private fun BigDecimal.numberFormat(): String {
 }
 
 fun main() {
-  val number = BigDecimal("123456789.123456789000000")
+  val number = BigDecimal("123456789.987651231000000")
   println(number.numberFormat())
 }
