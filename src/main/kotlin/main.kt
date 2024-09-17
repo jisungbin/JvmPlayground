@@ -1,3 +1,9 @@
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.coroutines.startCoroutine
+
 fun main() {
-  19.also { println(it.toString() + Unit.toString()) }
+  suspend { println("Hello, World!") }.startCoroutine(Continuation(EmptyCoroutineContext) { result ->
+    result.getOrThrow()
+  })
 }
