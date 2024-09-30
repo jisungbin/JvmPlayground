@@ -1,16 +1,17 @@
-private const val OPEN_RANGE = "{["
-private const val CLOSE_RANGE = "]}"
-
 fun main() {
-  val text = "포키 님, {[최근 찾고 있던]} 이벤트는 어떠세요?"
+  val regex = "\\{\\[(.*?)]}".toRegex()
+  val text = "How about the {[recently searched for]} event?"
+  val matchResult = regex.find(text)
+  val (extractedText, extractedRange) = matchResult?.groups?.get(1) ?: return
+  val cleanText = regex.replace(text) { extractedText }
 
-  val startIndex = text.indexOf(OPEN_RANGE) + OPEN_RANGE.length
-  val endIndex = text.indexOf(CLOSE_RANGE)
+  println("Result: $cleanText")
+  println("Extracted text: $extractedText")
+  println("Extracted range: $extractedRange")
 
-  val rangeText = text.substring(startIndex, endIndex)
-  val cleanText = text.replace(OPEN_RANGE, "").replace(CLOSE_RANGE, "")
+  // Adjust the range for cleanText
+  val adjustedStart = extractedRange.first - 2 // Remove 2 characters for "{["
+  val adjustedEnd = adjustedStart + extractedText.length - 1
 
-  println("원본 텍스트: $text")
-  println("범위 텍스트: $rangeText")
-  println("클린 텍스트: $cleanText")
+  println("Adjusted range in cleanText: ${cleanText.substring(adjustedStart..adjustedEnd)} ($adjustedStart..$adjustedEnd)")
 }
