@@ -1,17 +1,22 @@
+import java.text.DecimalFormat
+import java.util.Currency
+import java.util.Locale
+
 fun main() {
-  val regex = "\\{\\[(.*?)]}".toRegex()
-  val text = "How about the {[recently searched for]} event?"
-  val matchResult = regex.find(text)
-  val (extractedText, extractedRange) = matchResult?.groups?.get(1) ?: return
-  val cleanText = regex.replace(text) { extractedText }
-
-  println("Result: $cleanText")
-  println("Extracted text: $extractedText")
-  println("Extracted range: $extractedRange")
-
-  // Adjust the range for cleanText
-  val adjustedStart = extractedRange.first - 2 // Remove 2 characters for "{["
-  val adjustedEnd = adjustedStart + extractedText.length - 1
-
-  println("Adjusted range in cleanText: ${cleanText.substring(adjustedStart..adjustedEnd)} ($adjustedStart..$adjustedEnd)")
+  val formatter = DecimalFormat.getCurrencyInstance(Locale("th", "TH"))
+  val formatter2 = DecimalFormat.getCurrencyInstance(Locale("hu", "HU")).apply {
+    currency = Currency.getInstance(Locale.US)
+  }
+  val formatter3 = DecimalFormat.getCurrencyInstance(Locale("en", "HU")).apply {
+    currency = Currency.getInstance(Locale.US)
+  }
+  val formatter4 = DecimalFormat.getCurrencyInstance(Locale("en", "US")).apply {
+    currency = Currency.getInstance(Locale.US)
+  }
+  val formatter5 = DecimalFormat.getCurrencyInstance(Locale("en", "GB")).apply {
+    currency = Currency.getInstance(Locale.US)
+  }
+  listOf(formatter, formatter2, formatter3, formatter4, formatter5).forEach {
+    println(it.format(30672))
+  }
 }
