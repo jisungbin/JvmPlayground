@@ -1,22 +1,19 @@
-import java.text.DecimalFormat
-import java.util.Currency
-import java.util.Locale
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-fun main() {
-  val formatter = DecimalFormat.getCurrencyInstance(Locale("th", "TH"))
-  val formatter2 = DecimalFormat.getCurrencyInstance(Locale("hu", "HU")).apply {
-    currency = Currency.getInstance(Locale.US)
+fun main() = runBlocking {
+  val channel = Channel<Unit>(onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+  launch {
+    repeat(10) {
+      delay(1000L)
+      channel.trySend(Unit)
+    }
   }
-  val formatter3 = DecimalFormat.getCurrencyInstance(Locale("en", "HU")).apply {
-    currency = Currency.getInstance(Locale.US)
-  }
-  val formatter4 = DecimalFormat.getCurrencyInstance(Locale("en", "US")).apply {
-    currency = Currency.getInstance(Locale.US)
-  }
-  val formatter5 = DecimalFormat.getCurrencyInstance(Locale("en", "GB")).apply {
-    currency = Currency.getInstance(Locale.US)
-  }
-  listOf(formatter, formatter2, formatter3, formatter4, formatter5).forEach {
-    println(it.format(30672))
-  }
+
+  channel.consumeEach { println(it) }
 }
