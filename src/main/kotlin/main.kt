@@ -7,10 +7,10 @@ fun Long.withFlag(flag: Boolean): ULong {
   return if (flag) packed or mask else packed and mask.inv()
 }
 
-fun ULong.unpackFlagged(): Pair<Boolean, ULong> {
+fun unpackFlagged(value: ULong): Pair<Boolean, Long> {
   val mask = 1UL shl 63
-  val flag = (this and mask) != 0UL
-  val unpacked = this and (mask - 1UL)
+  val flag = (value and mask) != 0UL
+  val unpacked = (value and (mask - 1UL)).toLong()
   return flag to unpacked
 }
 
@@ -23,8 +23,8 @@ fun main() {
   println("trueed  : ${trueed.toString(2).padStart(64, '0')}")
   println("falseed : ${falseed.toString(2).padStart(64, '0')}")
 
-  val (flag1, unpacked1) = trueed.unpackFlagged()
-  val (flag2, unpacked2) = falseed.unpackFlagged()
+  val (flag1, unpacked1) = unpackFlagged(trueed)
+  val (flag2, unpacked2) = unpackFlagged(falseed)
 
   println()
 
