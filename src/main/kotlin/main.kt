@@ -1,19 +1,28 @@
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+fun Long.withFlag(flag: Boolean): ULong {
+  val packed = toULong()
+  val mask = 1UL shl 63
+  return if (flag) packed or mask else packed and mask.inv()
+}
 
-fun main() = runBlocking {
-  val channel = Channel<Unit>(onBufferOverflow = BufferOverflow.DROP_OLDEST)
+fun ULong.unpackFlagged(): Pair<Boolean, ULong> {
+  val mask = 1UL shl 63
+  val flag = (this and mask) != 0UL
+  val unpacked = this and (mask - 1UL)
+  return flag to unpacked
+}
 
-  launch {
-    repeat(10) {
-      delay(1000L)
-      channel.trySend(Unit)
-    }
-  }
+fun main() {
+  val value = Long.MAX_VALUE
+  val trueed = value.withFlag(true)
+  val falseed = value.withFlag(false)
 
-  channel.consumeEach { println(it) }
+  println("original: ${value.toString(2).padStart(64, '0')}")
+  println("trueed  : ${trueed.toString(2).padStart(64, '0')}")
+  println("falseed : ${falseed.toString(2).padStart(64, '0')}")
+
+  val (flag1, unpacked1) = trueed.unpackFlagged()
+  val (flag2, unpacked2) = falseed.unpackFlagged()
+
+  println("trueed  : flag=$flag1, unpacked=$unpacked1")
+  println("falseed : flag=$flag2, unpacked=$unpacked2")
 }
