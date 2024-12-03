@@ -1,4 +1,7 @@
 fun Long.withFlag(flag: Boolean): ULong {
+  @Suppress("KotlinConstantConditions") // false-positive
+  require(this >= 0) { "Only non-negative values are supported" }
+
   val packed = toULong()
   val mask = 1UL shl 63
   return if (flag) packed or mask else packed and mask.inv()
