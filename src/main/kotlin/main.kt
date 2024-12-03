@@ -23,6 +23,9 @@ fun main() {
   val (flag1, unpacked1) = trueed.unpackFlagged()
   val (flag2, unpacked2) = falseed.unpackFlagged()
 
-  println("trueed  : flag=$flag1, unpacked=$unpacked1")
-  println("falseed : flag=$flag2, unpacked=$unpacked2")
+  println()
+
+  println("original: $value")
+  println("trueed  : flag=${flag1.toString().padStart(5)}, unpacked=$unpacked1")
+  println("falseed : flag=${flag2.toString().padStart(5)}, unpacked=$unpacked2")
 }
