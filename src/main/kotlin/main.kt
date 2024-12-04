@@ -3,12 +3,12 @@ fun Long.withFlag(flag: Boolean): ULong {
   require(this >= 0) { "Only non-negative values are supported" }
 
   val packed = toULong()
-  val mask = 1UL shl 63
+  val mask = 1UL shl ULong.SIZE_BITS - 1
   return if (flag) packed or mask else packed and mask.inv()
 }
 
 fun unpackFlagged(value: ULong): Pair<Boolean, Long> {
-  val mask = 1UL shl 63
+  val mask = 1UL shl ULong.SIZE_BITS - 1
   val flag = (value and mask) != 0UL
   val unpacked = (value and (mask - 1UL)).toLong()
   return flag to unpacked
