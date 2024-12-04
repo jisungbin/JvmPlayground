@@ -20,8 +20,8 @@ fun main() {
   val falseed = value.withFlag(false)
 
   println("original: ${value.toString(2).padStart(64, '0')}")
-  println("trueed  : ${trueed.toString(2).padStart(64, '0')}")
-  println("falseed : ${falseed.toString(2).padStart(64, '0')}")
+  println("  trueed: ${trueed.toString(2).padStart(64, '0')}")
+  println(" falseed: ${falseed.toString(2).padStart(64, '0')}")
 
   val (flag1, unpacked1) = unpackFlagged(trueed)
   val (flag2, unpacked2) = unpackFlagged(falseed)
@@ -29,6 +29,13 @@ fun main() {
   println()
 
   println("original: $value")
-  println("trueed  : flag=${flag1.toString().padStart(5)}, unpacked=$unpacked1")
-  println("falseed : flag=${flag2.toString().padStart(5)}, unpacked=$unpacked2")
+  println("  trueed: flag=${flag1.toString().padEnd(5)}, unpacked=$unpacked1")
+  println(" falseed: flag=${flag2.toString().padEnd(5)}, unpacked=$unpacked2")
+
+  println()
+
+  println("original: ${value.toULong().toString(2).padStart(64, '0')}")
+  println("          (${value.toString().padStart(20)})")
+  println("     max: ${ULong.MAX_VALUE.toString(2).padStart(64, '0')}")
+  println("          (${ULong.MAX_VALUE.toString().padStart(20)})")
 }
