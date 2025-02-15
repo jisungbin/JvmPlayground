@@ -1,6 +1,6 @@
 plugins {
   kotlin("jvm") version "2.1.0"
-  kotlin("plugin.serialization") version "2.1.0"
+  application
 }
 
 repositories {
@@ -10,11 +10,8 @@ repositories {
 }
 
 dependencies {
-  implementation("in.sungb.ktlint:ktlint-ruleset-playground:0.2.0")
-
   implementation(kotlin("reflect"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-okio:1.7.3")
   implementation("com.squareup.okio:okio:3.9.1")
+  implementation("com.mayakapps.kache:file-kache:2.1.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 }
