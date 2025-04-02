@@ -11,6 +11,8 @@ repositories {
 
 dependencies {
   implementation(project(":second"))
+  implementation(project(":second:third"))
+  implementation("org.jsoup:jsoup:1.18.1")
 
   implementation(kotlin("reflect"))
   implementation("com.squareup.okio:okio:3.9.1")
