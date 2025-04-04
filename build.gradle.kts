@@ -10,12 +10,12 @@ repositories {
 }
 
 dependencies {
-  implementation(project(":second"))
-  implementation(project(":second:third"))
-  implementation("org.jsoup:jsoup:1.18.1")
+//  implementation(project(":second"))
+//  implementation(project(":second:third"))
 
   implementation(kotlin("reflect"))
   implementation("com.squareup.okio:okio:3.9.1")
-  implementation("com.mayakapps.kache:file-kache:2.1.0")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+
+  implementation("com.squareup.wire:wire-schema:5.3.1")
 }
