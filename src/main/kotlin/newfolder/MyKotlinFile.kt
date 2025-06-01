@@ -1,0 +1,4 @@
+package newfolder
+
+class MyKotlinFile {
+}
