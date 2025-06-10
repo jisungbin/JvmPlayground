@@ -15,6 +15,10 @@ repositories {
   google()
 }
 
+kotlin {
+  jvmToolchain(21)
+}
+
 dependencies {
 //  implementation(project(":second"))
 //  implementation(project(":second:third"))
