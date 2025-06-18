@@ -1,12 +1,6 @@
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-
+@Suppress("UNCHECKED_CAST")
 fun main() {
-  val job = Job()
-  repeat(10) { count ->
-    job.invokeOnCompletion { println(it) }
-  }
-  val scope = CoroutineScope(job)
-  scope.cancel()
+  val list = listOf(1, 2, 3, 4, 5).filter { it % 2 == 0 }
+  (list as java.util.List<Int>).addAll(listOf(6, 7, 8, 9, 10))
+  println(list)
 }
