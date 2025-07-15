@@ -1,6 +1,22 @@
-@Suppress("UNCHECKED_CAST")
-fun main() {
-  val list = listOf(1, 2, 3, 4, 5).filter { it % 2 == 0 }
-  (list as java.util.List<Int>).addAll(listOf(6, 7, 8, 9, 10))
-  println(list)
+abstract class Logger {
+  abstract fun log(message: String)
 }
+
+class ConsoleLogger : Logger() {
+  override fun log(message: String) = println(message)
+}
+
+context(logger: Logger) fun Int.doSomething() {
+  logger.log("hello")
+  // do something
+  logger.log("bye")
+  logger.log(": $this")
+}
+
+fun main() {
+  with(1) {
+    context(ConsoleLogger()) {
+      doSomething()
+    }
+  }
+} 

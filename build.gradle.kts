@@ -1,6 +1,12 @@
 plugins {
-  kotlin("jvm") version "2.1.0"
+  kotlin("jvm") version "2.2.0"
   application
+}
+
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.add("-Xcontext-parameters")
+  }
 }
 
 repositories {
