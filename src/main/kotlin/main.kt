@@ -1,3 +1,7 @@
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
+
+@OptIn(ExperimentalUuidApi::class)
 fun main() {
-  println(Any::class.simpleName)
+  println(Uuid.random().toHexString())
 }
