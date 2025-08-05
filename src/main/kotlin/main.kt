@@ -1,7 +1,6 @@
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.Collections.emptyList
 
-@OptIn(ExperimentalUuidApi::class)
+@Suppress("UNCHECKED_CAST")
 fun main() {
-  println(Uuid.random().toHexString())
+  println((emptyList<Any>() as java.util.List<Any>).add(1))
 }
