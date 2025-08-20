@@ -1,6 +1,8 @@
-import java.util.Collections.emptyList
+@Suppress("INVALID_CHARACTERS")
+fun `<anonymous>`() {
+  println(123)
+}
 
-@Suppress("UNCHECKED_CAST")
 fun main() {
-  println((emptyList<Any>() as java.util.List<Any>).add(1))
+  `<anonymous>`()
 }
