@@ -1,12 +1,6 @@
 plugins {
-  kotlin("jvm") version "2.2.0"
+  kotlin("jvm") version "2.2.10"
   application
-}
-
-kotlin {
-  compilerOptions {
-    freeCompilerArgs.add("-Xcontext-parameters")
-  }
 }
 
 repositories {
@@ -24,9 +18,8 @@ dependencies {
 //  implementation(project(":second:third"))
 
   implementation(kotlin("reflect"))
-  implementation("androidx.compose.runtime:runtime:1.8.3")
+  implementation("com.squareup.okio:okio:3.9.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 
-  implementation("com.squareup.okio:okio:3.9.1")
-  implementation("com.squareup.wire:wire-schema:5.3.1")
+  implementation("com.squareup.wire:wire-schema:5.3.8")
 }
