@@ -1,4 +1,8 @@
 class A {
+  constructor() {
+    println("0")
+  }
+
   val a = println("1")
 
   init {
@@ -9,10 +13,6 @@ class A {
 
   init {
     println("4")
-  }
-
-  constructor() {
-    println("0")
   }
 }
 
