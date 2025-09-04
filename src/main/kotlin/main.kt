@@ -2,6 +2,7 @@ fun main() {
   val start = 30
   val end = 64
 
+  // 0000000000_0000000000_0000000000_1111111111_1111111111_1111111111_1111
   println(
     java.lang.Long.toBinaryString(
       (-1L ushr (
@@ -18,6 +19,7 @@ fun main() {
       .joinToString("_"),
   )
 
+  // 1111_1111111111_1111111111_1111111111_0000000000_0000000000_0000000000
   println(
     java.lang.Long.toBinaryString(
       (-1L ushr (
