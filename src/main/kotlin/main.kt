@@ -15,6 +15,6 @@ fun main() {
       .reversed()
       .chunked(10)
       .reversed()
-      .joinToString("_")
+      .joinToString("_"),
   )
 }
