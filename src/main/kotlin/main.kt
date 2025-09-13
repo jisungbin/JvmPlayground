@@ -1,5 +1,7 @@
-class A(a: Int, b: Int = 2)
+import kotlin.reflect.KProperty
 
-fun main() {
-  1.let(::A)
-}
+object Test
+
+context(a: Test)
+operator fun <T> Unit.getValue(thisObj: Any?, property: KProperty<*>): T =
+  doubleValue
