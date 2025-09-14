@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package component;
+
+import "google/protobuf/any.proto";
+
+message RepeatingMessage {
+  repeated google.protobuf.Any messages = 1;
+}

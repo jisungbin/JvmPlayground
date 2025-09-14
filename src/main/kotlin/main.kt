@@ -1,7 +1,34 @@
-import kotlin.reflect.KProperty
+import com.squareup.wire.AnyMessage
+import com.squareup.wire.schema.EmptyWireLogger
+import com.squareup.wire.schema.KotlinTarget
+import com.squareup.wire.schema.Location
+import com.squareup.wire.schema.WireRun
+import component.RepeatingMessage
+import component.TextComponent
+import component.TextComponent2
+import okio.FileSystem
 
-object Test
+fun main() {
+  val messages = RepeatingMessage(
+    listOf(
+      AnyMessage.pack(TextComponent("1")),
+      AnyMessage.pack(TextComponent2("2")),
+      AnyMessage.pack(TextComponent("3")),
+    )
+  )
 
-context(a: Test)
-operator fun <T> Unit.getValue(thisObj: Any?, property: KProperty<*>): T =
-  doubleValue
+  val bytes = RepeatingMessage.ADAPTER.encode(messages)
+  val decoded = RepeatingMessage.ADAPTER.decode(bytes)
+
+  decoded.messages.forEach { println(it.typeUrl) }
+}
+
+fun wireRun() {
+  WireRun(
+    sourcePath = listOf(Location.get("/Users/jisungbin/IdeaProjects/JvmPlayground/src/proto")),
+    targets = listOf(
+      KotlinTarget(outDirectory = "/Users/jisungbin/IdeaProjects/JvmPlayground/src/main/kotlin/proto", escapeKotlinKeywords = true),
+    ),
+  )
+    .execute(FileSystem.SYSTEM, EmptyWireLogger())
+}

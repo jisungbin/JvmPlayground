@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package component;
+
+message TextComponent2 {
+  string text = 1;
+}
