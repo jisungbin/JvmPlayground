@@ -1,17 +1,19 @@
 import com.squareup.wire.AnyMessage
+import com.squareup.wire.Message
 import com.squareup.wire.schema.EmptyWireLogger
 import com.squareup.wire.schema.KotlinTarget
 import com.squareup.wire.schema.Location
 import com.squareup.wire.schema.WireRun
 import component.RepeatingMessage
-import component.TextComponent
 import component.TextComponent2
 import okio.FileSystem
 
 fun main() {
+//  wireRun()
+
   val messages = RepeatingMessage(
     listOf(
-      AnyMessage.pack(TextComponent("1")),
+      AnyMessage.pack(Message),
       AnyMessage.pack(TextComponent2("2")),
       AnyMessage.pack(TextComponent("3")),
     )

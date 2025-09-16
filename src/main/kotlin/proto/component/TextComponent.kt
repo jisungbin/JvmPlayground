@@ -15,19 +15,14 @@ import com.squareup.wire.ProtoWriter
 import com.squareup.wire.ReverseProtoWriter
 import com.squareup.wire.Syntax.PROTO_3
 import com.squareup.wire.WireField
-import com.squareup.wire.`internal`.JvmField
-import com.squareup.wire.`internal`.sanitize
-import kotlin.Any
-import kotlin.AssertionError
-import kotlin.Boolean
-import kotlin.Deprecated
-import kotlin.DeprecationLevel
-import kotlin.Int
-import kotlin.Long
-import kotlin.Nothing
-import kotlin.String
-import kotlin.Suppress
+import com.squareup.wire.internal.JvmField
+import com.squareup.wire.internal.sanitize
 import okio.ByteString
+
+abstract class SduiMessage<M : Message<M, Nothing>>(
+  adapter: ProtoAdapter<M>,
+  unknownFields: ByteString,
+) : Message<M, Nothing>(adapter, unknownFields)
 
 public class TextComponent(
   @field:WireField(
@@ -38,7 +33,7 @@ public class TextComponent(
   )
   public val text: String = "",
   unknownFields: ByteString = ByteString.EMPTY,
-) : Message<TextComponent, Nothing>(ADAPTER, unknownFields) {
+) : SduiMessage<TextComponent>(ADAPTER, unknownFields) {
   @Deprecated(
     message = "Shouldn't be used in Kotlin",
     level = DeprecationLevel.HIDDEN,
@@ -74,11 +69,11 @@ public class TextComponent(
   public companion object {
     @JvmField
     public val ADAPTER: ProtoAdapter<TextComponent> = object : ProtoAdapter<TextComponent>(
-      FieldEncoding.LENGTH_DELIMITED, 
-      TextComponent::class, 
-      "type.googleapis.com/component.TextComponent", 
-      PROTO_3, 
-      null, 
+      FieldEncoding.LENGTH_DELIMITED,
+      TextComponent::class,
+      "type.googleapis.com/component.TextComponent",
+      PROTO_3,
+      null,
       "TextMessage.proto"
     ) {
       override fun encodedSize(`value`: TextComponent): Int {
