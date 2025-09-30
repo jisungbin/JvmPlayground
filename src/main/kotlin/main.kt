@@ -1,10 +1,7 @@
-import kotlin.reflect.full.functions
+sealed interface A
 
-class A(private val a: Int) {
-  fun p(b: Any) = a.toString() + b
-}
+data object Test : A
 
 fun main() {
-  val a = A(1)
-  println(a::class.functions.first { it.name == "p" }.call(a, 2))
+  println(Test::class.objectInstance)
 }
