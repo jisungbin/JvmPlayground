@@ -1,7 +1,14 @@
-sealed interface A
+import kotlin.reflect.full.declaredMemberProperties
 
-data object Test : A
+class A private constructor(val a: Int) {
+    companion object {
+        operator fun invoke(a: Int): A {
+            return A(a)
+        }
+    }
+}
 
 fun main() {
-  println(Test::class.objectInstance)
+  val a = A(1)
+  println(A::class.declaredMemberProperties)
 }
