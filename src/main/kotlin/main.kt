@@ -1,14 +1,9 @@
-import kotlin.reflect.full.declaredMemberProperties
-
-class A private constructor(val a: Int) {
-    companion object {
-        operator fun invoke(a: Int): A {
-            return A(a)
-        }
-    }
+class A {
+  override fun equals(other: Any?): Boolean = true
+  override fun hashCode(): Int = 42
 }
 
 fun main() {
-  val a = A(1)
-  println(A::class.declaredMemberProperties)
+  println(A() == A())
+  println(A() === A())
 }
