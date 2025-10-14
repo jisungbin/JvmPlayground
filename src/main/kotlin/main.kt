@@ -7,5 +7,6 @@ fun main() {
   println(A() == A())
   println(A() === A())
   println(1 == 1)
-  println(1 === 1)
+  println(123 === 1)
+  println(123 === 123)
 }
